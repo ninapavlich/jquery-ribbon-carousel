@@ -25,13 +25,11 @@
     var pluginName = "ribbonCarousel",
         defaults = {
             mobileBreak:767,
-            autoPlay:false,
+            autoPlay:true,
             autoPlayDelay:15000,
             autoPlayInterval:15000,
             containerWidthPortion:1,
-            usePageAnchors:true,
             pageAnchorPrefix:'slide',
-            // imageFill:true, TODO-- implement
             themeClass:'ribbon-carousel-theme-default'
 
         };
@@ -198,7 +196,8 @@
                 var parent = this;
                 clearTimeout(this.autoprogress_timeout);
                 this.autoprogress_timeout = setTimeout(function(){
-                    parent.setIndex(parent.getIndexAfter(parent.current_index));
+                    var next_index = parent.getIndexAfter(parent.current_index);
+                    document.location.hash = parent.options.pageAnchorPrefix+(next_index+1);                    
                 }, this.options.autoPlayInterval);                    
             }
             
@@ -395,6 +394,7 @@
 
             $(this.carousel_left).css("width", left);
             $(this.carousel_right).css("width", center_right);
+            $(this.carousel_right_container).css("width", center_right);
             $(this.carousel_center).css("width", center_right);
         },
         resizeImages:function(){

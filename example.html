@@ -16,6 +16,24 @@
         <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 
         <script src="js/vendor/modernizr-2.8.3.min.js"></script>
+
+        <style> 
+            pre{
+                color: white;
+                background: #333;
+
+            }
+            code{
+                font-family: Consolas, Monaco, monospace;
+                width:600px;
+                margin:auto;
+                padding: 15px;
+                white-space: pre;
+                overflow: auto;
+                display: block;
+            }
+
+        </style>
     </head>
     <body>
         <!--[if lt IE 8]>
@@ -23,9 +41,15 @@
         <![endif]-->
 
         <!-- Add your site or application content here -->
-        
-        <div class="ribbon-carousel">
-    
+        <code><pre>
+
+            &lt;script&gt;
+            $('.ribbon-carousel').ribbonCarousel({
+                'autoPlay':true;
+            });
+            &lt;/script&gt;
+        </pre></code>
+        <div class="ribbon-carousel">    
             <ul>
                 <li>                
                     <a href="http://www.example.com">
@@ -38,14 +62,16 @@
                     </a>
                 </li>
                 <li>                
-                    <a href="http://www.example.com">
-                        <figure>
-                            <img src="http://placehold.it/802x450" alt="Image alt" />                        
-                            <figcaption>
-                                Image Caption
-                            </figcaption>
-                        </figure>
-                    </a>
+                
+                    <figure>
+                        <img src="http://placehold.it/802x450" alt="Image alt" />                        
+                        <figcaption class="right">
+                            <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. </p>
+                            <p>Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in <a href="http://www.example.com">hendrerit in vulputate</a> velit esse molestie consequat.</p>
+                            <p>Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer possim assum. </p>
+                            <p>Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer possim assum. </p>
+                        </figcaption>
+                    </figure>
                 </li>
                 <li>                
                     <a href="http://www.example.com">
@@ -72,8 +98,7 @@
                         </figure>
                     </a>
                 </li>
-            </ul>
-            
+            </ul>            
         </div>
 
 
@@ -84,7 +109,9 @@
         <script src="dist/js/ribboncarousel.jqueryplugin.js"></script>
 
         <script>
-        $('.ribbon-carousel').ribbonCarousel();
+        $('.ribbon-carousel').ribbonCarousel({
+            'autoPlay':false
+        });
         </script>
 
         <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
