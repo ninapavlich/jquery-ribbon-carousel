@@ -1,0 +1,373 @@
+@import "compass";
+@import "compass/reset";
+
+$mobile_break: 768px;
+
+
+.ribbon-carousel {
+	display:none;
+	overflow:visible;
+
+	.container{
+		position: relative;
+		margin:auto;	
+		height: 100%;
+	}
+
+	.slides {
+		width:100%;
+		height:100%;
+		overflow:hidden;
+	}
+
+	.carousel-center-container{
+		width:100%;
+		height:100%;
+		position:absolute;
+		overflow:hidden;
+
+		.carousel-center{
+			li{
+				overflow: hidden;
+			}
+		}
+		
+	}
+	.carousel-left-container{
+		width:100%;
+
+		
+
+		.carousel-left{
+
+			
+			@include clearfix();
+			height:100%;
+			right: 100%;
+			padding-left:0px;
+			margin:0;
+			list-style-type:none;
+
+			li{
+				overflow: hidden;
+				height:100%;
+				float:left;
+				img{
+					width:100%;
+					height:100%;
+				}
+			}
+		}
+	}
+	.carousel-right-container{
+		width:100%;
+		height: 100%;
+
+		position: relative;
+		left: 100%;
+		overflow:hidden;
+
+		
+		.carousel-right{
+
+			@include clearfix();
+			height:100%;
+			right: 100%;
+			padding-left:0px;
+			margin:0;
+			list-style-type:none;
+
+			li{	
+				overflow: hidden;
+				height:100%;
+				float:left;
+				img{
+					width:100%;
+					height:100%;
+
+
+				}
+			}
+		}
+	}
+	.controls{
+		position:relative;
+
+		.carousel-pagination{
+			position:absolute;
+			z-index:100;
+			@include clearfix;
+
+			li{
+				float:left;
+			}
+		}
+		.carousel-arrows{
+			position:absolute;
+			z-index:100;
+			width:100%;
+
+			.next{
+				position:absolute;
+				right:0px;
+			}
+			.previous{
+				position:absolute;
+				left:0px;
+			}
+		}
+	}
+	
+	.carousel-center, .carousel-left, .carousel-right{
+		position:absolute;
+		width:100%;
+		margin:0px;
+
+	}
+	.carousel-center{
+		position:absolute;
+		width:400%;
+		height:100%;
+
+		@include clearfix();
+		padding-left:0px;
+		list-style-type:none;
+		
+
+		li{
+			
+			width:13%; //25% of 52%
+			height:100%;
+			float:left;
+			position:relative;
+
+			img{
+				width:100%;
+				height:100%;
+			}
+			figcaption {
+				@include box-sizing(border-box);
+				position: absolute; 
+		        bottom: 0; 
+		        left: 0; 
+		        width: 100%;
+		        
+		        
+			}
+		}
+	}
+	
+	
+	.carousel-contents{
+
+		display:none;
+	}
+	
+	
+}
+
+
+
+@media screen and (max-width: $mobile_break){
+
+	.ribbon-carousel{
+				
+		
+
+		background-color:transparent;
+
+		.carousel-left-container,
+		.carousel-right-container{
+	    	display:none;
+	    }
+	    .carousel-description{
+	    	width: 100%;
+			left: 0;
+			background-color:transparent;
+			padding:0px;
+
+			li{
+				width: 100%;
+
+				padding-left: 2%;
+				padding-right: 3%;
+				position:absolute;
+				bottom: 0px;			
+
+				background-color:#222;
+				background-color:rgba(0, 0, 0, .7);
+
+				padding-top:0px;
+				margin-bottom:0px;
+
+				& > div{
+					display:none;
+				}
+
+
+			}
+	    }
+	    .progress{
+			z-index:15;
+			height: 50px;
+		}
+		.prev-next{
+			z-index: 10;
+		}
+		.carousel-description > li{
+			z-index:20;
+		}
+	   
+	    
+		.carousel-contents li.active{
+			width:100%;
+		}
+		
+		.carousel-container{
+			& > .container{
+				
+				
+			}
+			.progress{
+				top:-45px;
+				height:auto;
+			}
+		}
+	}
+	
+    
+}
+
+/* Basic Theme, can/should be overritten */
+
+.ribbon-carousel-theme-default{
+
+	display:block;
+
+	font-family: Helvetica, Arial, Sans-Serif;
+	background-color: #000;	
+	height: 400px;
+
+	.container{
+		max-width:600px;
+	}
+	.controls{
+		
+	}
+
+	.carousel-left-container{		
+
+		.carousel-left{
+			@include opacity(0.4);
+		}
+		li{	
+			figcaption{
+				display:none;
+			}
+		}	
+	}
+	.carousel-right-container{		
+
+		.carousel-right{
+			@include opacity(0.4);
+		}
+		li{	
+			figcaption{
+				display:none;
+			}
+		}
+	}
+
+	.controls{
+		position:relative;
+
+		a{	
+			
+			font-family: FontAwesome;
+			text-decoration:none;
+			color:#000;
+			margin: 0;
+  			padding: 0.5em;
+
+			&:hover, &:focus{
+				color:#666;
+			}
+			&.active{
+				color:#1b926c;
+			}
+
+		}
+
+		.carousel-pagination{
+			position:absolute;
+			z-index:100;
+			@include clearfix;
+			top: 410px;
+
+
+			li{
+				float:left;
+				
+
+				a{	
+					margin-right: 5px;
+					font-family: FontAwesome;
+					
+					span{
+						display:none;
+					}
+					&:before{
+						content: "\f10c"
+					}
+
+					&.active{
+						&:before{
+							content: "\f192";
+						}
+					}
+
+					
+
+
+
+				}
+			}
+		}
+		.carousel-arrows{
+			top:170px;
+
+			a{
+				font-family: FontAwesome;
+				span{
+					display:none;
+				}
+
+				&.next{
+					&:before{
+						content: "\f054";
+					}
+				}
+				&.previous{
+					&:before{
+						content: "\f053";
+					}
+				}
+			}
+		}
+	}
+
+	li{
+		
+		
+
+		
+		figcaption {
+			
+	        
+	        background-color:#fff;
+			background-color:rgba(255, 255, 255, .7);
+			padding:0.5em;
+			color:#000;
+		}
+	}
+}

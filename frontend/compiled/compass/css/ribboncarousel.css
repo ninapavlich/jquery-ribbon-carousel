@@ -1,0 +1,384 @@
+@charset "UTF-8";
+/* line 5, ../../../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.1/stylesheets/compass/reset/_utilities.scss */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font: inherit;
+  font-size: 100%;
+  vertical-align: baseline;
+}
+
+/* line 22, ../../../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.1/stylesheets/compass/reset/_utilities.scss */
+html {
+  line-height: 1;
+}
+
+/* line 24, ../../../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.1/stylesheets/compass/reset/_utilities.scss */
+ol, ul {
+  list-style: none;
+}
+
+/* line 26, ../../../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.1/stylesheets/compass/reset/_utilities.scss */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* line 28, ../../../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.1/stylesheets/compass/reset/_utilities.scss */
+caption, th, td {
+  text-align: left;
+  font-weight: normal;
+  vertical-align: middle;
+}
+
+/* line 30, ../../../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.1/stylesheets/compass/reset/_utilities.scss */
+q, blockquote {
+  quotes: none;
+}
+/* line 103, ../../../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.1/stylesheets/compass/reset/_utilities.scss */
+q:before, q:after, blockquote:before, blockquote:after {
+  content: "";
+  content: none;
+}
+
+/* line 32, ../../../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.1/stylesheets/compass/reset/_utilities.scss */
+a img {
+  border: none;
+}
+
+/* line 116, ../../../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.1/stylesheets/compass/reset/_utilities.scss */
+article, aside, details, figcaption, figure, footer, header, hgroup, main, menu, nav, section, summary {
+  display: block;
+}
+
+/* line 7, ../../../sass/ribboncarousel.scss */
+.ribbon-carousel {
+  display: none;
+  overflow: visible;
+}
+/* line 11, ../../../sass/ribboncarousel.scss */
+.ribbon-carousel .container {
+  position: relative;
+  margin: auto;
+  height: 100%;
+}
+/* line 17, ../../../sass/ribboncarousel.scss */
+.ribbon-carousel .slides {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+/* line 23, ../../../sass/ribboncarousel.scss */
+.ribbon-carousel .carousel-center-container {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  overflow: hidden;
+}
+/* line 30, ../../../sass/ribboncarousel.scss */
+.ribbon-carousel .carousel-center-container .carousel-center li {
+  overflow: hidden;
+}
+/* line 36, ../../../sass/ribboncarousel.scss */
+.ribbon-carousel .carousel-left-container {
+  width: 100%;
+}
+/* line 41, ../../../sass/ribboncarousel.scss */
+.ribbon-carousel .carousel-left-container .carousel-left {
+  overflow: hidden;
+  *zoom: 1;
+  height: 100%;
+  right: 100%;
+  padding-left: 0px;
+  margin: 0;
+  list-style-type: none;
+}
+/* line 51, ../../../sass/ribboncarousel.scss */
+.ribbon-carousel .carousel-left-container .carousel-left li {
+  overflow: hidden;
+  height: 100%;
+  float: left;
+}
+/* line 55, ../../../sass/ribboncarousel.scss */
+.ribbon-carousel .carousel-left-container .carousel-left li img {
+  width: 100%;
+  height: 100%;
+}
+/* line 62, ../../../sass/ribboncarousel.scss */
+.ribbon-carousel .carousel-right-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  left: 100%;
+  overflow: hidden;
+}
+/* line 71, ../../../sass/ribboncarousel.scss */
+.ribbon-carousel .carousel-right-container .carousel-right {
+  overflow: hidden;
+  *zoom: 1;
+  height: 100%;
+  right: 100%;
+  padding-left: 0px;
+  margin: 0;
+  list-style-type: none;
+}
+/* line 80, ../../../sass/ribboncarousel.scss */
+.ribbon-carousel .carousel-right-container .carousel-right li {
+  overflow: hidden;
+  height: 100%;
+  float: left;
+}
+/* line 84, ../../../sass/ribboncarousel.scss */
+.ribbon-carousel .carousel-right-container .carousel-right li img {
+  width: 100%;
+  height: 100%;
+}
+/* line 93, ../../../sass/ribboncarousel.scss */
+.ribbon-carousel .controls {
+  position: relative;
+}
+/* line 96, ../../../sass/ribboncarousel.scss */
+.ribbon-carousel .controls .carousel-pagination {
+  position: absolute;
+  z-index: 100;
+  overflow: hidden;
+  *zoom: 1;
+}
+/* line 101, ../../../sass/ribboncarousel.scss */
+.ribbon-carousel .controls .carousel-pagination li {
+  float: left;
+}
+/* line 105, ../../../sass/ribboncarousel.scss */
+.ribbon-carousel .controls .carousel-arrows {
+  position: absolute;
+  z-index: 100;
+  width: 100%;
+}
+/* line 110, ../../../sass/ribboncarousel.scss */
+.ribbon-carousel .controls .carousel-arrows .next {
+  position: absolute;
+  right: 0px;
+}
+/* line 114, ../../../sass/ribboncarousel.scss */
+.ribbon-carousel .controls .carousel-arrows .previous {
+  position: absolute;
+  left: 0px;
+}
+/* line 121, ../../../sass/ribboncarousel.scss */
+.ribbon-carousel .carousel-center, .ribbon-carousel .carousel-left, .ribbon-carousel .carousel-right {
+  position: absolute;
+  width: 100%;
+  margin: 0px;
+}
+/* line 127, ../../../sass/ribboncarousel.scss */
+.ribbon-carousel .carousel-center {
+  position: absolute;
+  width: 400%;
+  height: 100%;
+  overflow: hidden;
+  *zoom: 1;
+  padding-left: 0px;
+  list-style-type: none;
+}
+/* line 137, ../../../sass/ribboncarousel.scss */
+.ribbon-carousel .carousel-center li {
+  width: 13%;
+  height: 100%;
+  float: left;
+  position: relative;
+}
+/* line 144, ../../../sass/ribboncarousel.scss */
+.ribbon-carousel .carousel-center li img {
+  width: 100%;
+  height: 100%;
+}
+/* line 148, ../../../sass/ribboncarousel.scss */
+.ribbon-carousel .carousel-center li figcaption {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}
+/* line 161, ../../../sass/ribboncarousel.scss */
+.ribbon-carousel .carousel-contents {
+  display: none;
+}
+
+@media screen and (max-width: 768px) {
+  /* line 173, ../../../sass/ribboncarousel.scss */
+  .ribbon-carousel {
+    background-color: transparent;
+  }
+  /* line 179, ../../../sass/ribboncarousel.scss */
+  .ribbon-carousel .carousel-left-container,
+  .ribbon-carousel .carousel-right-container {
+    display: none;
+  }
+  /* line 183, ../../../sass/ribboncarousel.scss */
+  .ribbon-carousel .carousel-description {
+    width: 100%;
+    left: 0;
+    background-color: transparent;
+    padding: 0px;
+  }
+  /* line 189, ../../../sass/ribboncarousel.scss */
+  .ribbon-carousel .carousel-description li {
+    width: 100%;
+    padding-left: 2%;
+    padding-right: 3%;
+    position: absolute;
+    bottom: 0px;
+    background-color: #222;
+    background-color: rgba(0, 0, 0, 0.7);
+    padding-top: 0px;
+    margin-bottom: 0px;
+  }
+  /* line 203, ../../../sass/ribboncarousel.scss */
+  .ribbon-carousel .carousel-description li > div {
+    display: none;
+  }
+  /* line 210, ../../../sass/ribboncarousel.scss */
+  .ribbon-carousel .progress {
+    z-index: 15;
+    height: 50px;
+  }
+  /* line 214, ../../../sass/ribboncarousel.scss */
+  .ribbon-carousel .prev-next {
+    z-index: 10;
+  }
+  /* line 217, ../../../sass/ribboncarousel.scss */
+  .ribbon-carousel .carousel-description > li {
+    z-index: 20;
+  }
+  /* line 222, ../../../sass/ribboncarousel.scss */
+  .ribbon-carousel .carousel-contents li.active {
+    width: 100%;
+  }
+  /* line 231, ../../../sass/ribboncarousel.scss */
+  .ribbon-carousel .carousel-container .progress {
+    top: -45px;
+    height: auto;
+  }
+}
+/* Basic Theme, can/should be overritten */
+/* line 243, ../../../sass/ribboncarousel.scss */
+.ribbon-carousel-theme-default {
+  display: block;
+  font-family: Helvetica, Arial, Sans-Serif;
+  background-color: #000;
+  height: 400px;
+}
+/* line 251, ../../../sass/ribboncarousel.scss */
+.ribbon-carousel-theme-default .container {
+  max-width: 600px;
+}
+/* line 260, ../../../sass/ribboncarousel.scss */
+.ribbon-carousel-theme-default .carousel-left-container .carousel-left {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=40);
+  opacity: 0.4;
+}
+/* line 264, ../../../sass/ribboncarousel.scss */
+.ribbon-carousel-theme-default .carousel-left-container li figcaption {
+  display: none;
+}
+/* line 271, ../../../sass/ribboncarousel.scss */
+.ribbon-carousel-theme-default .carousel-right-container .carousel-right {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=40);
+  opacity: 0.4;
+}
+/* line 275, ../../../sass/ribboncarousel.scss */
+.ribbon-carousel-theme-default .carousel-right-container li figcaption {
+  display: none;
+}
+/* line 281, ../../../sass/ribboncarousel.scss */
+.ribbon-carousel-theme-default .controls {
+  position: relative;
+}
+/* line 284, ../../../sass/ribboncarousel.scss */
+.ribbon-carousel-theme-default .controls a {
+  font-family: FontAwesome;
+  text-decoration: none;
+  color: #000;
+  margin: 0;
+  padding: 0.5em;
+}
+/* line 292, ../../../sass/ribboncarousel.scss */
+.ribbon-carousel-theme-default .controls a:hover, .ribbon-carousel-theme-default .controls a:focus {
+  color: #666;
+}
+/* line 295, ../../../sass/ribboncarousel.scss */
+.ribbon-carousel-theme-default .controls a.active {
+  color: #1b926c;
+}
+/* line 301, ../../../sass/ribboncarousel.scss */
+.ribbon-carousel-theme-default .controls .carousel-pagination {
+  position: absolute;
+  z-index: 100;
+  overflow: hidden;
+  *zoom: 1;
+  top: 410px;
+}
+/* line 308, ../../../sass/ribboncarousel.scss */
+.ribbon-carousel-theme-default .controls .carousel-pagination li {
+  float: left;
+}
+/* line 312, ../../../sass/ribboncarousel.scss */
+.ribbon-carousel-theme-default .controls .carousel-pagination li a {
+  margin-right: 5px;
+  font-family: FontAwesome;
+}
+/* line 316, ../../../sass/ribboncarousel.scss */
+.ribbon-carousel-theme-default .controls .carousel-pagination li a span {
+  display: none;
+}
+/* line 319, ../../../sass/ribboncarousel.scss */
+.ribbon-carousel-theme-default .controls .carousel-pagination li a:before {
+  content: "";
+}
+/* line 324, ../../../sass/ribboncarousel.scss */
+.ribbon-carousel-theme-default .controls .carousel-pagination li a.active:before {
+  content: "\f192";
+}
+/* line 336, ../../../sass/ribboncarousel.scss */
+.ribbon-carousel-theme-default .controls .carousel-arrows {
+  top: 170px;
+}
+/* line 339, ../../../sass/ribboncarousel.scss */
+.ribbon-carousel-theme-default .controls .carousel-arrows a {
+  font-family: FontAwesome;
+}
+/* line 341, ../../../sass/ribboncarousel.scss */
+.ribbon-carousel-theme-default .controls .carousel-arrows a span {
+  display: none;
+}
+/* line 346, ../../../sass/ribboncarousel.scss */
+.ribbon-carousel-theme-default .controls .carousel-arrows a.next:before {
+  content: "\f054";
+}
+/* line 351, ../../../sass/ribboncarousel.scss */
+.ribbon-carousel-theme-default .controls .carousel-arrows a.previous:before {
+  content: "\f053";
+}
+/* line 364, ../../../sass/ribboncarousel.scss */
+.ribbon-carousel-theme-default li figcaption {
+  background-color: #fff;
+  background-color: rgba(255, 255, 255, 0.7);
+  padding: 0.5em;
+  color: #000;
+}
