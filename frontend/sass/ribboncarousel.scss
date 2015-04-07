@@ -1,5 +1,4 @@
 @import "compass";
-@import "compass/reset";
 
 $mobile_break: 768px;
 
@@ -250,8 +249,9 @@ $mobile_break: 768px;
 	.container{
 		max-width:600px;
 	}
-	.controls{
-		
+	figure{
+		margin:0;
+		padding:0;
 	}
 
 	.carousel-left-container{		
@@ -264,8 +264,8 @@ $mobile_break: 768px;
 				display:none;
 			}
 			figure{
-				@include box-sizing(border-box);
-				border-right: 1px solid #000;
+				//@include box-sizing(border-box);
+				//border-right: 1px solid #000;
 				overflow:hidden;
 			}
 		}	
@@ -281,8 +281,8 @@ $mobile_break: 768px;
 				display:none;
 			}
 			figure{
-				@include box-sizing(border-box);
-				border-left: 1px solid #000;
+				//@include box-sizing(border-box);
+				//border-left: 1px solid #000;
 				overflow:hidden;
 			}
 		}
@@ -312,12 +312,14 @@ $mobile_break: 768px;
 			position:absolute;
 			z-index:100;
 			@include clearfix;
-			top: 410px;
+			top: 560px;
+			padding:0;
+			margin:0;
 
 
 			li{
 				float:left;
-				
+				list-style-type: none;
 
 				a{	
 					margin-right: 5px;
@@ -344,7 +346,13 @@ $mobile_break: 768px;
 			}
 		}
 		.carousel-arrows{
-			top:170px;
+			top:220px;
+			padding:0;
+			margin:0;
+
+			li{
+				list-style-type: none;
+			}
 
 			a{
 				font-family: FontAwesome;
@@ -398,4 +406,66 @@ $mobile_break: 768px;
 			}
 		}
 	}
+}
+@media (min-width: 768px){
+    .ribbon-carousel-theme-default{
+        height:384px;
+        .container {
+            max-width: 768px;
+        }  
+        .controls{
+	        .carousel-pagination{
+				top: 394px;
+			}
+			.carousel-arrows{
+				top: 192px;
+			}
+        } 
+    }
+}
+@media (min-width: 992px){
+    .ribbon-carousel-theme-default{
+        height:496px;
+        .container {
+            max-width: 992px;
+        }   
+        .controls{
+	        .carousel-pagination{
+				top: 506px;
+			}
+			.carousel-arrows{
+				top: 248px;
+			}
+        }  
+    }
+}
+@media (min-width: 1200px){
+    .ribbon-carousel-theme-default{
+        height:600px;
+        .container {
+            max-width: 1200px;
+        }  
+        .controls{
+	        .carousel-pagination{
+				top: 610px;
+			}
+			.carousel-arrows{
+				top: 300px;
+			}
+        }  
+    }
+}
+
+
+@media (max-width: 768px){
+    .ribbon-carousel-theme-default{
+        .controls{
+	        .carousel-pagination{
+				top: 404px;
+			}
+			.carousel-arrows{
+				top: 192px;
+			}
+        }
+    }
 }

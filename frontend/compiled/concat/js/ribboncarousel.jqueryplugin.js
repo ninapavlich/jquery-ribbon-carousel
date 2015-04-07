@@ -29,6 +29,7 @@
             autoPlayDelay:15000,
             autoPlayInterval:15000,
             containerWidthPortion:1,
+            useAnchors:true,
             pageAnchorPrefix:'slide',
             themeClass:'ribbon-carousel-theme-default'
 
