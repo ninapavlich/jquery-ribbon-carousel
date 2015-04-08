@@ -25,11 +25,11 @@
     var pluginName = "ribbonCarousel",
         defaults = {
             mobileBreak:767,
-            autoPlay:true,
+            autoPlay:false,
             autoPlayDelay:5000,
             autoPlayInterval:5000,
             containerWidthPortion:1,
-            useAnchors:true,
+            useAnchors:false,
             pageAnchorPrefix:'slide',
             themeClass:'ribbon-carousel-theme-default'
 
@@ -84,7 +84,9 @@
 
         init: function() {
             
+            $(this.element).addClass('loading');
             $(this.element).addClass(this.options.themeClass);
+
 
             var parent = this;
             var slides = $(this.element).find("li");
@@ -110,7 +112,11 @@
             if(this.ready==false){
                 return;
             }
+
+            // console.log("ready, but still show loading")
+            // return;
             $(this.element).addClass('ready');
+            $(this.element).removeClass('loading');
             
             
             var carousel_contents = $(this.element).find("ul")[0];
@@ -175,7 +181,7 @@
 
             // this.measureContents();
             this.resizeImages();
-            this.addListeners()
+            this.addListeners();
             //this.removeListeners()
 
             this.setIndex(this.current_index);
@@ -221,7 +227,9 @@
 
                     if(parent.is_playing){
                         var next_index = parent.getIndexAfter(parent.current_index);
-                        if(parent.options.useAnchors){
+
+                        console.log("USE Anchors? "+parent.options.useAnchors)
+                        if(parent.options.useAnchors==true){
                             document.location.hash = parent.options.pageAnchorPrefix+(next_index+1);                        
                         }else{
                             parent.setIndex(next_index);
@@ -376,31 +384,6 @@
             
             
         },
-        // measureContents: function(){
-            
-        //     var ww = $(window).width();
-
-        //     if(ww <= this.mobile_break){
-
-        //         var min_mobile_height = 250;
-        //         var max_mobile_height = $(window).height()*0.6;
-        //         var mobile_height = Math.max(min_mobile_height, max_mobile_height);
-        //         $(this.element).find(".carousel-container").height(mobile_height);
-
-        //     }else{
-
-        //         var pad_bottom = 20;
-        //         var min_height = 336;
-        //         var max_height = min_height;
-
-        //         $(this.element).find("ul.carousel-description > li").each(function(index, item){
-        //             var item_height = $(item).outerHeight() + parseInt($(item).css("paddingTop"), 10) + pad_bottom;
-        //             max_height = Math.max(max_height, item_height)
-        //         })
-
-        //         $(this.element).find(".carousel-container").height(max_height)
-        //     }
-        // },
         alignContainers:function(){
             var columnWidth = this.getImageColumnWidth();
 
@@ -423,7 +406,7 @@
             var left = (this.set_length) * columnWidth;
             var center_right = index_list_length * columnWidth;
 
-            console.log("LEFT? "+left+" center_right? "+center_right+" columnWidth? "+columnWidth)
+            // console.log("LEFT? "+left+" center_right? "+center_right+" columnWidth? "+columnWidth)
 
             $(this.carousel_left).css("width", left);
             $(this.carousel_right).css("width", center_right);
@@ -559,6 +542,8 @@
 
             $(this.carousel_arrows).find(".next").attr('href', new_next_url);
             $(this.carousel_arrows).find(".previous").attr('href', new_prev_url);
+
+            
             
 
         },
@@ -567,17 +552,6 @@
             var parent = this
             
 
-            
-            
-            // var arrows="<ul class='carousel-arrows'><li><a href='#' class='next'><span>Next</span></a></li><li><a href='#' class='previous'><span>Previous</span></a></li></ul>";
-            // var playpause="<ul class='carousel-play-pause'><li><a href='#' class='play'><span>Play</span></a></li><li><a href='#' class='pause'><span>Pause</span></a></li></ul>";
-            // var pagination = "<ul class='carousel-pagination'>";
-            // $(slides).each(function(index, slide){
-            //     pagination += "<li><a href='#"+parent.options.pageAnchorPrefix+(index+1)+"'><span>Slide "+(index+1)+"</span></a></li>";
-            // });
-            // pagination += "</ul>";
-
-
             $(this.element).find(".controls a").bind("click", function(e) {
 
                 switch (e.which) {
@@ -585,10 +559,12 @@
 
                         var href = $(this).attr('href');
                         if(href.indexOf(parent.options.pageAnchorPrefix)>=0){
-                            e.preventDefault();
-                            e.defaultPrevented;                    
-                            var new_index = parent.getIndexFromHash(href);
-                            parent.setIndex(new_index)
+                            if(parent.options.useAnchors==false){
+                                e.preventDefault();
+                                e.defaultPrevented;                    
+                                var new_index = parent.getIndexFromHash(href);
+                                parent.setIndex(new_index);    
+                            }                            
                         }else if(href=="#play"){
                             e.preventDefault();
                             e.defaultPrevented; 
@@ -602,9 +578,7 @@
                         
                         break;
                     
-                }
-
-                
+                }                
 
                 //var current_index = ($(this).index())
                 //parent.setIndex(current_index)
@@ -630,15 +604,23 @@
             //add 
             var parent = this;
             var target_index = $(slide).attr('data-slide');
-           
+            $(slide).bind("click", function(e) {
+                
+                //if slide isn't currently featured, bring to center.     
+                if(target_index != parent.current_index){
+                    e.preventDefault();
+                    e.defaultPrevented; 
+                    parent.setIndex(target_index);
+                }                
+            });
             $(slide).find("a").bind("click", function(e) {
-                //e.preventDefault();
-                //parent.setIndex(target_index);
-                var target = e.target;
-                if(e.target.tagName.toUpperCase() == 'IMG'){
-                    target = $(target).parent()
-                }
-                window.location.href = $(target).attr("href");
+                
+                //if slide isn't currently featured, bring to center.     
+                if(target_index != parent.current_index){
+                    e.preventDefault();
+                    e.defaultPrevented; 
+                    parent.setIndex(target_index);
+                }                
             });
         },
         removeListeners: function() {
@@ -648,6 +630,7 @@
         removeSlideListeners:function(slide){
             //remove 
             $(slide).find("a").unbind("click");
+            $(slide).unbind("click");
         },
         getImageColumnWidth:function(){
             var ww = $(window).width();
