@@ -14,6 +14,15 @@ $mobile_break: 768px;
 }
 
 .ribbon-carousel {
+
+	@include opacity(0);
+
+	&.loading{
+		@include opacity(1);
+	}
+	&.ready{
+		@include opacity(1);
+	}
 	
 	overflow:visible;
 
@@ -264,6 +273,7 @@ $mobile_break: 768px;
 
 .ribbon-carousel-theme-default{
 	
+
 	&.loading{
 		& > ul{
 			display:none;
@@ -293,11 +303,8 @@ $mobile_break: 768px;
 	}
 
 
-	//@include opacity(0.5);
+	
 
-	&.ready{
-		//@include opacity(1);
-	}
 
 	font-family: Helvetica, Arial, Sans-Serif;
 	background-color: #fff;	
