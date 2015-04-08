@@ -500,6 +500,10 @@ $mobile_break: 768px;
 
 			@include opacity(0.8);
 
+			a{
+				color:#333;				
+			}
+
 			*{
 				margin-bottom:1em;
 				&:last-child{

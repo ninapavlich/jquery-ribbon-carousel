@@ -455,14 +455,18 @@
   opacity: 0.8;
 }
 /* line 503, ../../../sass/ribboncarousel.scss */
+.ribbon-carousel-theme-default li figcaption a {
+  color: #333;
+}
+/* line 507, ../../../sass/ribboncarousel.scss */
 .ribbon-carousel-theme-default li figcaption * {
   margin-bottom: 1em;
 }
-/* line 505, ../../../sass/ribboncarousel.scss */
+/* line 509, ../../../sass/ribboncarousel.scss */
 .ribbon-carousel-theme-default li figcaption *:last-child {
   margin-bottom: 0;
 }
-/* line 510, ../../../sass/ribboncarousel.scss */
+/* line 514, ../../../sass/ribboncarousel.scss */
 .ribbon-carousel-theme-default li figcaption.right {
   right: 0px;
   height: 100%;
@@ -473,81 +477,81 @@
 }
 
 @media (min-width: 768px) {
-  /* line 522, ../../../sass/ribboncarousel.scss */
+  /* line 526, ../../../sass/ribboncarousel.scss */
   .ribbon-carousel-theme-default {
     height: 384px;
   }
-  /* line 524, ../../../sass/ribboncarousel.scss */
+  /* line 528, ../../../sass/ribboncarousel.scss */
   .ribbon-carousel-theme-default .container {
     max-width: 768px;
   }
-  /* line 528, ../../../sass/ribboncarousel.scss */
+  /* line 532, ../../../sass/ribboncarousel.scss */
   .ribbon-carousel-theme-default .controls .carousel-pagination {
     top: 394px;
   }
-  /* line 531, ../../../sass/ribboncarousel.scss */
+  /* line 535, ../../../sass/ribboncarousel.scss */
   .ribbon-carousel-theme-default .controls .carousel-play-pause {
     top: 390px;
   }
-  /* line 534, ../../../sass/ribboncarousel.scss */
+  /* line 538, ../../../sass/ribboncarousel.scss */
   .ribbon-carousel-theme-default .controls .carousel-arrows {
     top: 192px;
   }
 }
 @media (min-width: 992px) {
-  /* line 541, ../../../sass/ribboncarousel.scss */
+  /* line 545, ../../../sass/ribboncarousel.scss */
   .ribbon-carousel-theme-default {
     height: 496px;
   }
-  /* line 543, ../../../sass/ribboncarousel.scss */
+  /* line 547, ../../../sass/ribboncarousel.scss */
   .ribbon-carousel-theme-default .container {
     max-width: 992px;
   }
-  /* line 547, ../../../sass/ribboncarousel.scss */
+  /* line 551, ../../../sass/ribboncarousel.scss */
   .ribbon-carousel-theme-default .controls .carousel-pagination {
     top: 506px;
   }
-  /* line 550, ../../../sass/ribboncarousel.scss */
+  /* line 554, ../../../sass/ribboncarousel.scss */
   .ribbon-carousel-theme-default .controls .carousel-play-pause {
     top: 502px;
   }
-  /* line 553, ../../../sass/ribboncarousel.scss */
+  /* line 557, ../../../sass/ribboncarousel.scss */
   .ribbon-carousel-theme-default .controls .carousel-arrows {
     top: 248px;
   }
 }
 @media (min-width: 1200px) {
-  /* line 560, ../../../sass/ribboncarousel.scss */
+  /* line 564, ../../../sass/ribboncarousel.scss */
   .ribbon-carousel-theme-default {
     height: 600px;
   }
-  /* line 562, ../../../sass/ribboncarousel.scss */
+  /* line 566, ../../../sass/ribboncarousel.scss */
   .ribbon-carousel-theme-default .container {
     max-width: 1200px;
   }
-  /* line 566, ../../../sass/ribboncarousel.scss */
+  /* line 570, ../../../sass/ribboncarousel.scss */
   .ribbon-carousel-theme-default .controls .carousel-pagination {
     top: 610px;
   }
-  /* line 569, ../../../sass/ribboncarousel.scss */
+  /* line 573, ../../../sass/ribboncarousel.scss */
   .ribbon-carousel-theme-default .controls .carousel-play-pause {
     top: 606px;
   }
-  /* line 572, ../../../sass/ribboncarousel.scss */
+  /* line 576, ../../../sass/ribboncarousel.scss */
   .ribbon-carousel-theme-default .controls .carousel-arrows {
     top: 300px;
   }
 }
 @media (max-width: 768px) {
-  /* line 583, ../../../sass/ribboncarousel.scss */
+  /* line 587, ../../../sass/ribboncarousel.scss */
   .ribbon-carousel-theme-default .controls .carousel-pagination {
     top: 404px;
   }
-  /* line 586, ../../../sass/ribboncarousel.scss */
+  /* line 590, ../../../sass/ribboncarousel.scss */
   .ribbon-carousel-theme-default .controls .carousel-play-pause {
     top: 400px;
   }
-  /* line 589, ../../../sass/ribboncarousel.scss */
+  /* line 593, ../../../sass/ribboncarousel.scss */
   .ribbon-carousel-theme-default .controls .carousel-arrows {
     top: 192px;
   }
