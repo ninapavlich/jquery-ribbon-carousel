@@ -18,10 +18,9 @@
         <script src="js/vendor/modernizr-2.8.3.min.js"></script>
 
         <style> 
-            pre{
-                color: white;
-                background: #333;
-
+            html, body{
+                margin:0;
+                padding:0;
             }
             code{
                 font-family: Consolas, Monaco, monospace;
@@ -31,6 +30,14 @@
                 white-space: pre;
                 overflow: auto;
                 display: block;
+
+                color: white;
+                background: #333;
+
+                -webkit-border-radius: 10px;
+                -moz-border-radius: 10px;
+                border-radius: 10px;
+
             }
 
         </style>
@@ -41,14 +48,13 @@
         <![endif]-->
 
         <!-- Add your site or application content here -->
-        <code><pre>
-
-            &lt;script&gt;
-            $('.ribbon-carousel').ribbonCarousel({
-                'autoPlay':true;
-            });
-            &lt;/script&gt;
-        </pre></code>
+        <pre><code>
+    &lt;script&gt;
+    $('.ribbon-carousel').ribbonCarousel({
+        'autoPlay':true;
+    });
+    &lt;/script&gt;
+        </code></pre>
         <div class="ribbon-carousel">    
             <ul>
                 <li>                

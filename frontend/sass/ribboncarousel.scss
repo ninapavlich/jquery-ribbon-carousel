@@ -1,10 +1,20 @@
 @import "compass";
 
 $mobile_break: 768px;
+@mixin micro-clearfix(){
+  &:before,
+  &:after {
+      content: " "; /* 1 */
+      display: table; /* 2 */
+  }
 
+  &:after {
+      clear: both;
+  }
+}
 
 .ribbon-carousel {
-	display:none;
+	
 	overflow:visible;
 
 	.container{
@@ -91,16 +101,28 @@ $mobile_break: 768px;
 	.controls{
 		position:relative;
 
-		.carousel-pagination{
-			position:absolute;
-			z-index:100;
-			@include clearfix;
+		& > .container{
+			@include micro-clearfix;
+		}
+
+		ul{
+			padding:0;
+			margin:0;
+			@include micro-clearfix;
 
 			li{
 				float:left;
+				list-style-type: none;
 			}
 		}
+
+		.carousel-pagination{			
+			position:absolute;
+			z-index:100;
+		}
 		.carousel-arrows{
+			padding:0;
+			margin:0;
 			position:absolute;
 			z-index:100;
 			width:100%;
@@ -114,6 +136,8 @@ $mobile_break: 768px;
 				left:0px;
 			}
 		}
+
+
 	}
 	
 	.carousel-center, .carousel-left, .carousel-right{
@@ -240,7 +264,13 @@ $mobile_break: 768px;
 
 .ribbon-carousel-theme-default{
 
-	display:block;
+
+
+	@include opacity(0.5);
+
+	&.ready{
+		@include opacity(1);
+	}
 
 	font-family: Helvetica, Arial, Sans-Serif;
 	background-color: #fff;	
@@ -303,7 +333,7 @@ $mobile_break: 768px;
 				color:#666;
 			}
 			&.active{
-				color:#1b926c;
+				color:#333;
 			}
 
 		}
@@ -311,7 +341,6 @@ $mobile_break: 768px;
 		.carousel-pagination{
 			position:absolute;
 			z-index:100;
-			@include clearfix;
 			top: 560px;
 			padding:0;
 			margin:0;
@@ -329,24 +358,54 @@ $mobile_break: 768px;
 						display:none;
 					}
 					&:before{
-						content: "\f10c"
+						content: "\f10c";
 					}
 
 					&.active{
 						&:before{
-							content: "\f192";
+							content: "\f111";
 						}
 					}
-
-					
-
-
 
 				}
 			}
 		}
+		.carousel-play-pause{
+			position:absolute;
+			z-index:100;
+
+			top: 610px;
+  			right: 0;
+
+
+			li{
+				float:right;
+			}
+
+			a{
+				font-family: FontAwesome;
+				span{
+					display:none;
+				}
+
+				&.play{
+					&:before{
+						content: "\f04b";
+					}
+				}
+				&.pause{
+					&:before{
+						content: "\f04c";
+					}
+				}
+			}
+
+		}
+
 		.carousel-arrows{
-			top:220px;
+			position:absolute;
+			z-index:100;
+
 			padding:0;
 			margin:0;
 

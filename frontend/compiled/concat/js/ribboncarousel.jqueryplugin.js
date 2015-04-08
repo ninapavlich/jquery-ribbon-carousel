@@ -26,8 +26,8 @@
         defaults = {
             mobileBreak:767,
             autoPlay:true,
-            autoPlayDelay:15000,
-            autoPlayInterval:15000,
+            autoPlayDelay:5000,
+            autoPlayInterval:5000,
             containerWidthPortion:1,
             useAnchors:true,
             pageAnchorPrefix:'slide',
@@ -61,7 +61,7 @@
         this.can_animate = true;
 
 
-        
+        this.is_playing = false;
         this.autoprogress_timeout = -1;
 
 
@@ -83,6 +83,9 @@
     RibbonCarousel.prototype = {
 
         init: function() {
+            
+            $(this.element).addClass(this.options.themeClass);
+
             var parent = this;
             var slides = $(this.element).find("li");
             this.set_length = $(slides).length;
@@ -108,7 +111,7 @@
                 return;
             }
             $(this.element).addClass('ready');
-            $(this.element).addClass(this.options.themeClass);
+            
             
             var carousel_contents = $(this.element).find("ul")[0];
 
@@ -129,12 +132,13 @@
 
             //populate controls container
             var arrows="<ul class='carousel-arrows'><li><a href='#' class='next'><span>Next</span></a></li><li><a href='#' class='previous'><span>Previous</span></a></li></ul>";
+            var playpause="<ul class='carousel-play-pause'><li><a href='#play' class='play'><span>Play</span></a></li><li><a href='#pause' class='pause'><span>Pause</span></a></li></ul>";
             var pagination = "<ul class='carousel-pagination'>";
             $(slides).each(function(index, slide){
                 pagination += "<li><a href='#"+parent.options.pageAnchorPrefix+(index+1)+"'><span>Slide "+(index+1)+"</span></a></li>";
             });
             pagination += "</ul>";
-            $(this.controls_container).append($(pagination+arrows));
+            $(this.controls_container).append($(pagination+arrows+playpause));
             
 
             $(this.slides_container).append($("<div class='carousel-left-container'><ul class='carousel-left'></ul></div>"));
@@ -155,7 +159,11 @@
             this.carousel_arrows = $(this.controls_container).find(".carousel-arrows")[0]
 
 
-            
+            if(this.options.autoPlay==true){
+                this.setIsPlaying(true);
+            }else{
+                this.setIsPlaying(false);
+            }
 
 
 
@@ -189,23 +197,47 @@
             //console.log("the max index is "+this.max_index);
             
             this.render();
-
-
         
-        
-            if(this.options.autoPlay==true){
+            this.setIsPlaying(this.is_playing);            
+            
+        },
+        setIsPlaying:function(val){
+            
+            // console.log("set is_playing = "+val)
+            this.is_playing = val;
+
+            if(this.is_playing){
+                $(this.element).find(".controls a.pause").css("display", "block");    
+                $(this.element).find(".controls a.play").css("display", "none");    
+            }else{
+                $(this.element).find(".controls a.pause").css("display", "none");
+                $(this.element).find(".controls a.play").css("display", "block");
+            }
+            
+            if(this.is_playing){
                 var parent = this;
                 clearTimeout(this.autoprogress_timeout);
                 this.autoprogress_timeout = setTimeout(function(){
-                    var next_index = parent.getIndexAfter(parent.current_index);
-                    document.location.hash = parent.options.pageAnchorPrefix+(next_index+1);                    
-                }, this.options.autoPlayInterval);                    
+
+                    if(parent.is_playing){
+                        var next_index = parent.getIndexAfter(parent.current_index);
+                        if(parent.options.useAnchors){
+                            document.location.hash = parent.options.pageAnchorPrefix+(next_index+1);                        
+                        }else{
+                            parent.setIndex(next_index);
+                        }
+                    }                    
+
+                }, this.options.autoPlayInterval); 
+            }else if(this.is_playing==false){
+                clearTimeout(this.autoprogress_timeout);
+            }
+        },
+        getIndexFromHash:function(hash){
+            if ('undefined' === typeof hash) {
+                hash = document.location.hash;
             }
             
-            
-        },
-        getIndexFromHash:function(){
-            var hash = document.location.hash;
             var dePrefixed = hash.replace("#"+this.options.pageAnchorPrefix, '');
             var index = parseInt(dePrefixed);
             if(isNaN(index)){
@@ -536,36 +568,48 @@
             
 
             
-            //normal smooth behavior
-            $(this.element).find("li.next a").bind("click", function(e) {
-
-                e.preventDefault();
-                e.defaultPrevented
-                
-                //looping - if the current set index is already at min or max, and the arrow is clicked, modulus gets the remainder instead so the index loops back over its range
-                var target_index = (parent.current_index+1)%parent.set_length
-                
-                
-                parent.setIndex(target_index)
-                
-            });
-
-            $(this.element).find("li.prev a").bind("click", function(e) {
-                e.preventDefault();                
             
+            // var arrows="<ul class='carousel-arrows'><li><a href='#' class='next'><span>Next</span></a></li><li><a href='#' class='previous'><span>Previous</span></a></li></ul>";
+            // var playpause="<ul class='carousel-play-pause'><li><a href='#' class='play'><span>Play</span></a></li><li><a href='#' class='pause'><span>Pause</span></a></li></ul>";
+            // var pagination = "<ul class='carousel-pagination'>";
+            // $(slides).each(function(index, slide){
+            //     pagination += "<li><a href='#"+parent.options.pageAnchorPrefix+(index+1)+"'><span>Slide "+(index+1)+"</span></a></li>";
+            // });
+            // pagination += "</ul>";
 
-                var target_index = ((parent.current_index-1)+parent.set_length)%parent.set_length                
 
-                parent.setIndex(target_index)
-            });
+            $(this.element).find(".controls a").bind("click", function(e) {
 
-            $(this.element).find(".progress li").bind("click", function(e) {
-                e.preventDefault();
+                switch (e.which) {
+                    case 1:
+
+                        var href = $(this).attr('href');
+                        if(href.indexOf(parent.options.pageAnchorPrefix)>=0){
+                            e.preventDefault();
+                            e.defaultPrevented;                    
+                            var new_index = parent.getIndexFromHash(href);
+                            parent.setIndex(new_index)
+                        }else if(href=="#play"){
+                            e.preventDefault();
+                            e.defaultPrevented; 
+                            parent.setIsPlaying(true);
+
+                        }else if(href=="#pause"){
+                            e.preventDefault();
+                            e.defaultPrevented; 
+                            parent.setIsPlaying(false);
+                        }
+                        
+                        break;
+                    
+                }
+
                 
-                var current_index = ($(this).index())
-                parent.setIndex(current_index)
-            });
 
+                //var current_index = ($(this).index())
+                //parent.setIndex(current_index)
+                
+            });
 
 
             $(window).bind("resize", function(event){
@@ -599,9 +643,7 @@
         },
         removeListeners: function() {
             //unbind click events on the arrows and dots
-            $(this.element).find("li.next a").unbind("click");
-            $(this.element).find("li.prev a").unbind("click");
-            $(this.element).find(".progress li").unbind("click");
+            $(this.element).find(".controls a").unbind("click");
         },
         removeSlideListeners:function(slide){
             //remove 
