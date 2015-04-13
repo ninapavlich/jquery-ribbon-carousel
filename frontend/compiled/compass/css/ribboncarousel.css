@@ -258,6 +258,7 @@
 }
 /* line 277, ../../../sass/ribboncarousel.scss */
 .ribbon-carousel-theme-default.loading {
+  position: relative;
   height: 600px;
   width: 100%;
   background-color: #ddd;
@@ -265,16 +266,16 @@
   border-top: 1px solid #eee;
   border-bottom: 1px solid #eee;
 }
-/* line 278, ../../../sass/ribboncarousel.scss */
+/* line 279, ../../../sass/ribboncarousel.scss */
 .ribbon-carousel-theme-default.loading > ul {
   display: none;
 }
-/* line 281, ../../../sass/ribboncarousel.scss */
+/* line 282, ../../../sass/ribboncarousel.scss */
 .ribbon-carousel-theme-default.loading:before {
   font-family: FontAwesome;
   content: "\f013";
   left: 50%;
-  top: 450px;
+  top: calc(50% - 30px);
   text-align: center;
   position: absolute;
   font-size: 72px;
@@ -282,46 +283,54 @@
   animation: fa-spin 2s infinite linear;
   color: #ddd;
 }
-/* line 313, ../../../sass/ribboncarousel.scss */
+/* line 297, ../../../sass/ribboncarousel.scss */
+.ribbon-carousel-theme-default.loading .controls {
+  display: none;
+}
+/* line 317, ../../../sass/ribboncarousel.scss */
 .ribbon-carousel-theme-default .container {
   max-width: 600px;
 }
-/* line 316, ../../../sass/ribboncarousel.scss */
+/* line 320, ../../../sass/ribboncarousel.scss */
 .ribbon-carousel-theme-default figure {
   margin: 0;
   padding: 0;
 }
-/* line 323, ../../../sass/ribboncarousel.scss */
+/* line 327, ../../../sass/ribboncarousel.scss */
 .ribbon-carousel-theme-default .carousel-left-container .carousel-left {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=40);
   opacity: 0.4;
 }
-/* line 327, ../../../sass/ribboncarousel.scss */
+/* line 331, ../../../sass/ribboncarousel.scss */
 .ribbon-carousel-theme-default .carousel-left-container li figcaption {
   display: none;
 }
-/* line 330, ../../../sass/ribboncarousel.scss */
+/* line 334, ../../../sass/ribboncarousel.scss */
 .ribbon-carousel-theme-default .carousel-left-container li figure {
   overflow: hidden;
 }
-/* line 339, ../../../sass/ribboncarousel.scss */
+/* line 343, ../../../sass/ribboncarousel.scss */
 .ribbon-carousel-theme-default .carousel-right-container .carousel-right {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=40);
   opacity: 0.4;
 }
-/* line 344, ../../../sass/ribboncarousel.scss */
+/* line 348, ../../../sass/ribboncarousel.scss */
 .ribbon-carousel-theme-default .carousel-right-container li figcaption {
   display: none;
 }
-/* line 347, ../../../sass/ribboncarousel.scss */
+/* line 351, ../../../sass/ribboncarousel.scss */
 .ribbon-carousel-theme-default .carousel-right-container li figure {
   overflow: hidden;
 }
-/* line 355, ../../../sass/ribboncarousel.scss */
+/* line 359, ../../../sass/ribboncarousel.scss */
 .ribbon-carousel-theme-default .controls {
   position: relative;
 }
-/* line 358, ../../../sass/ribboncarousel.scss */
+/* line 362, ../../../sass/ribboncarousel.scss */
+.ribbon-carousel-theme-default .controls.disabled {
+  display: none;
+}
+/* line 365, ../../../sass/ribboncarousel.scss */
 .ribbon-carousel-theme-default .controls a {
   font-family: FontAwesome;
   text-decoration: none;
@@ -330,15 +339,15 @@
   color: #666;
   font-size: 12px;
 }
-/* line 367, ../../../sass/ribboncarousel.scss */
+/* line 374, ../../../sass/ribboncarousel.scss */
 .ribbon-carousel-theme-default .controls a:hover, .ribbon-carousel-theme-default .controls a:focus {
   color: #333;
 }
-/* line 370, ../../../sass/ribboncarousel.scss */
+/* line 377, ../../../sass/ribboncarousel.scss */
 .ribbon-carousel-theme-default .controls a.active {
   color: #666;
 }
-/* line 376, ../../../sass/ribboncarousel.scss */
+/* line 383, ../../../sass/ribboncarousel.scss */
 .ribbon-carousel-theme-default .controls .carousel-pagination {
   position: absolute;
   z-index: 100;
@@ -346,106 +355,106 @@
   padding: 0;
   margin: 0;
 }
-/* line 384, ../../../sass/ribboncarousel.scss */
+/* line 391, ../../../sass/ribboncarousel.scss */
 .ribbon-carousel-theme-default .controls .carousel-pagination li {
   float: left;
   list-style-type: none;
 }
-/* line 388, ../../../sass/ribboncarousel.scss */
+/* line 395, ../../../sass/ribboncarousel.scss */
 .ribbon-carousel-theme-default .controls .carousel-pagination li a {
   margin-right: 5px;
   font-family: FontAwesome;
 }
-/* line 392, ../../../sass/ribboncarousel.scss */
+/* line 399, ../../../sass/ribboncarousel.scss */
 .ribbon-carousel-theme-default .controls .carousel-pagination li a span {
   display: none;
 }
-/* line 395, ../../../sass/ribboncarousel.scss */
+/* line 402, ../../../sass/ribboncarousel.scss */
 .ribbon-carousel-theme-default .controls .carousel-pagination li a:before {
   content: "\f1db";
 }
-/* line 400, ../../../sass/ribboncarousel.scss */
+/* line 407, ../../../sass/ribboncarousel.scss */
 .ribbon-carousel-theme-default .controls .carousel-pagination li a:hover:before {
   content: "\f111";
 }
-/* line 405, ../../../sass/ribboncarousel.scss */
+/* line 412, ../../../sass/ribboncarousel.scss */
 .ribbon-carousel-theme-default .controls .carousel-pagination li a.active:before {
   content: "\f111";
 }
-/* line 413, ../../../sass/ribboncarousel.scss */
+/* line 420, ../../../sass/ribboncarousel.scss */
 .ribbon-carousel-theme-default .controls .carousel-play-pause {
   position: absolute;
   z-index: 100;
   top: 560px;
   right: 0;
 }
-/* line 420, ../../../sass/ribboncarousel.scss */
+/* line 427, ../../../sass/ribboncarousel.scss */
 .ribbon-carousel-theme-default .controls .carousel-play-pause li {
   float: right;
 }
-/* line 424, ../../../sass/ribboncarousel.scss */
+/* line 431, ../../../sass/ribboncarousel.scss */
 .ribbon-carousel-theme-default .controls .carousel-play-pause a {
   font-family: FontAwesome;
 }
-/* line 426, ../../../sass/ribboncarousel.scss */
+/* line 433, ../../../sass/ribboncarousel.scss */
 .ribbon-carousel-theme-default .controls .carousel-play-pause a span {
   display: none;
 }
-/* line 431, ../../../sass/ribboncarousel.scss */
+/* line 438, ../../../sass/ribboncarousel.scss */
 .ribbon-carousel-theme-default .controls .carousel-play-pause a.play:before {
   content: "\f04b";
 }
-/* line 436, ../../../sass/ribboncarousel.scss */
+/* line 443, ../../../sass/ribboncarousel.scss */
 .ribbon-carousel-theme-default .controls .carousel-play-pause a.pause:before {
   content: "\f04c";
 }
-/* line 444, ../../../sass/ribboncarousel.scss */
+/* line 451, ../../../sass/ribboncarousel.scss */
 .ribbon-carousel-theme-default .controls .carousel-arrows {
   position: absolute;
   z-index: 100;
   padding: 0;
   margin: 0;
 }
-/* line 451, ../../../sass/ribboncarousel.scss */
+/* line 458, ../../../sass/ribboncarousel.scss */
 .ribbon-carousel-theme-default .controls .carousel-arrows li {
   list-style-type: none;
 }
-/* line 455, ../../../sass/ribboncarousel.scss */
+/* line 462, ../../../sass/ribboncarousel.scss */
 .ribbon-carousel-theme-default .controls .carousel-arrows a {
   font-family: FontAwesome;
   background-color: rgba(0, 0, 0, 0.3);
   color: #fff;
   font-size: 24px;
 }
-/* line 461, ../../../sass/ribboncarousel.scss */
+/* line 468, ../../../sass/ribboncarousel.scss */
 .ribbon-carousel-theme-default .controls .carousel-arrows a:hover, .ribbon-carousel-theme-default .controls .carousel-arrows a:focus {
   background-color: rgba(0, 0, 0, 0.5);
 }
-/* line 464, ../../../sass/ribboncarousel.scss */
+/* line 471, ../../../sass/ribboncarousel.scss */
 .ribbon-carousel-theme-default .controls .carousel-arrows a:active {
   background-color: rgba(0, 0, 0, 0.7);
 }
-/* line 468, ../../../sass/ribboncarousel.scss */
+/* line 475, ../../../sass/ribboncarousel.scss */
 .ribbon-carousel-theme-default .controls .carousel-arrows a span {
   display: none;
 }
-/* line 472, ../../../sass/ribboncarousel.scss */
+/* line 479, ../../../sass/ribboncarousel.scss */
 .ribbon-carousel-theme-default .controls .carousel-arrows a.next {
   padding: 20px 15px 20px 20px;
 }
-/* line 474, ../../../sass/ribboncarousel.scss */
+/* line 481, ../../../sass/ribboncarousel.scss */
 .ribbon-carousel-theme-default .controls .carousel-arrows a.next:before {
   content: "\f054";
 }
-/* line 478, ../../../sass/ribboncarousel.scss */
+/* line 485, ../../../sass/ribboncarousel.scss */
 .ribbon-carousel-theme-default .controls .carousel-arrows a.previous {
   padding: 20px 20px 20px 15px;
 }
-/* line 480, ../../../sass/ribboncarousel.scss */
+/* line 487, ../../../sass/ribboncarousel.scss */
 .ribbon-carousel-theme-default .controls .carousel-arrows a.previous:before {
   content: "\f053";
 }
-/* line 493, ../../../sass/ribboncarousel.scss */
+/* line 500, ../../../sass/ribboncarousel.scss */
 .ribbon-carousel-theme-default li figcaption {
   background-color: #fff;
   background-color: rgba(255, 255, 255, 0.7);
@@ -454,19 +463,19 @@
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=80);
   opacity: 0.8;
 }
-/* line 503, ../../../sass/ribboncarousel.scss */
+/* line 510, ../../../sass/ribboncarousel.scss */
 .ribbon-carousel-theme-default li figcaption a {
   color: #333;
 }
-/* line 507, ../../../sass/ribboncarousel.scss */
+/* line 514, ../../../sass/ribboncarousel.scss */
 .ribbon-carousel-theme-default li figcaption * {
   margin-bottom: 1em;
 }
-/* line 509, ../../../sass/ribboncarousel.scss */
+/* line 516, ../../../sass/ribboncarousel.scss */
 .ribbon-carousel-theme-default li figcaption *:last-child {
   margin-bottom: 0;
 }
-/* line 514, ../../../sass/ribboncarousel.scss */
+/* line 521, ../../../sass/ribboncarousel.scss */
 .ribbon-carousel-theme-default li figcaption.right {
   right: 0px;
   height: 100%;
@@ -477,81 +486,81 @@
 }
 
 @media (min-width: 768px) {
-  /* line 526, ../../../sass/ribboncarousel.scss */
+  /* line 533, ../../../sass/ribboncarousel.scss */
   .ribbon-carousel-theme-default {
     height: 384px;
   }
-  /* line 528, ../../../sass/ribboncarousel.scss */
+  /* line 535, ../../../sass/ribboncarousel.scss */
   .ribbon-carousel-theme-default .container {
     max-width: 768px;
   }
-  /* line 532, ../../../sass/ribboncarousel.scss */
+  /* line 539, ../../../sass/ribboncarousel.scss */
   .ribbon-carousel-theme-default .controls .carousel-pagination {
     top: 394px;
   }
-  /* line 535, ../../../sass/ribboncarousel.scss */
+  /* line 542, ../../../sass/ribboncarousel.scss */
   .ribbon-carousel-theme-default .controls .carousel-play-pause {
     top: 390px;
   }
-  /* line 538, ../../../sass/ribboncarousel.scss */
+  /* line 545, ../../../sass/ribboncarousel.scss */
   .ribbon-carousel-theme-default .controls .carousel-arrows {
     top: 192px;
   }
 }
 @media (min-width: 992px) {
-  /* line 545, ../../../sass/ribboncarousel.scss */
+  /* line 552, ../../../sass/ribboncarousel.scss */
   .ribbon-carousel-theme-default {
     height: 496px;
   }
-  /* line 547, ../../../sass/ribboncarousel.scss */
+  /* line 554, ../../../sass/ribboncarousel.scss */
   .ribbon-carousel-theme-default .container {
     max-width: 992px;
   }
-  /* line 551, ../../../sass/ribboncarousel.scss */
+  /* line 558, ../../../sass/ribboncarousel.scss */
   .ribbon-carousel-theme-default .controls .carousel-pagination {
     top: 506px;
   }
-  /* line 554, ../../../sass/ribboncarousel.scss */
+  /* line 561, ../../../sass/ribboncarousel.scss */
   .ribbon-carousel-theme-default .controls .carousel-play-pause {
     top: 502px;
   }
-  /* line 557, ../../../sass/ribboncarousel.scss */
+  /* line 564, ../../../sass/ribboncarousel.scss */
   .ribbon-carousel-theme-default .controls .carousel-arrows {
     top: 248px;
   }
 }
 @media (min-width: 1200px) {
-  /* line 564, ../../../sass/ribboncarousel.scss */
+  /* line 571, ../../../sass/ribboncarousel.scss */
   .ribbon-carousel-theme-default {
     height: 600px;
   }
-  /* line 566, ../../../sass/ribboncarousel.scss */
+  /* line 573, ../../../sass/ribboncarousel.scss */
   .ribbon-carousel-theme-default .container {
     max-width: 1200px;
   }
-  /* line 570, ../../../sass/ribboncarousel.scss */
+  /* line 577, ../../../sass/ribboncarousel.scss */
   .ribbon-carousel-theme-default .controls .carousel-pagination {
     top: 610px;
   }
-  /* line 573, ../../../sass/ribboncarousel.scss */
+  /* line 580, ../../../sass/ribboncarousel.scss */
   .ribbon-carousel-theme-default .controls .carousel-play-pause {
     top: 606px;
   }
-  /* line 576, ../../../sass/ribboncarousel.scss */
+  /* line 583, ../../../sass/ribboncarousel.scss */
   .ribbon-carousel-theme-default .controls .carousel-arrows {
     top: 300px;
   }
 }
 @media (max-width: 768px) {
-  /* line 587, ../../../sass/ribboncarousel.scss */
+  /* line 594, ../../../sass/ribboncarousel.scss */
   .ribbon-carousel-theme-default .controls .carousel-pagination {
     top: 404px;
   }
-  /* line 590, ../../../sass/ribboncarousel.scss */
+  /* line 597, ../../../sass/ribboncarousel.scss */
   .ribbon-carousel-theme-default .controls .carousel-play-pause {
     top: 400px;
   }
-  /* line 593, ../../../sass/ribboncarousel.scss */
+  /* line 600, ../../../sass/ribboncarousel.scss */
   .ribbon-carousel-theme-default .controls .carousel-arrows {
     top: 192px;
   }

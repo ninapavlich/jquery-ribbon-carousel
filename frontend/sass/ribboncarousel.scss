@@ -275,6 +275,7 @@ $mobile_break: 768px;
 	
 
 	&.loading{
+		position:relative;
 		& > ul{
 			display:none;
 		}
@@ -282,7 +283,7 @@ $mobile_break: 768px;
 			font-family: FontAwesome;
 			content: "\f013";
 			left: 50%;
-			top:450px;
+			top:calc(50% - 30px);
 			text-align: center;
 			position: absolute;
 			font-size: 72px;
@@ -292,6 +293,9 @@ $mobile_break: 768px;
 
 			color:#ddd;
 			
+		}
+		.controls{
+			display:none;
 		}
 
 		height:600px;
@@ -355,6 +359,9 @@ $mobile_break: 768px;
 	.controls{
 		position:relative;
 
+		&.disabled{
+			display:none;
+		}
 		a{	
 			
 			font-family: FontAwesome;

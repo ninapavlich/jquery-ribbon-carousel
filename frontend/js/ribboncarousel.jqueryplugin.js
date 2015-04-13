@@ -23,6 +23,9 @@
         this.element = element;
 
         this.options = $.extend( {}, defaults, options) ;
+
+        this.containers_inited = false;
+        this.slides_inited = false;
         this.ready = false;
 
         this.mobile_break = this.options.mobileBreak;
@@ -61,67 +64,85 @@
     RibbonCarousel.prototype = {
 
         init: function() {
+
+            // console.log("this.slides_inited: "+this.slides_inited+" ready? "+this.ready)
             
             $(this.element).addClass('loading');
+            $(this.element).trigger('loading');
             $(this.element).addClass(this.options.themeClass);
 
 
             var parent = this;
-            var slides = $(this.element).find("li");
-            this.set_length = $(slides).length;
-            this.max_index = this.set_length - 1;
+            
+            if(this.containers_inited==false){
+                this.containers_inited = true;
+                this.createContainers();
+            }
+            
 
-            if(this.ready==false){                
-                var inited_images = $(slides).find("img[data-inited='true']")
-                if(slides.length == inited_images.length){
+            if(this.ready==false){ 
+                if(this._original_slides.length >= 1){
                     this.ready = true;
-                }else{
-
-                    $(slides).each(function(index, slide){
-                        var image = $(slide).find("img")[0];
-                        var isMeasured = parent.isImageMeasured(image);
-                        if(isMeasured == false){
-                            parent.measureImage(image)   
-                            return false;  
-                        }                        
-                    })
                 }
             }
+
+            if(this.slides_inited == false){
+                this.slides_inited = true;
+                this.startSlideQueue();
+            }
+
+
             if(this.ready==false){
                 return;
             }
 
             // console.log("ready, but still show loading")
-            // return;
+            //return;
             $(this.element).addClass('ready');
-            $(this.element).removeClass('loading');
-            
-            
-            var carousel_contents = $(this.element).find("ul")[0];
+            $(this.element).trigger('ready');
 
+            $(this.element).removeClass('loading');
+
+
+            if(this.options.autoPlay==true){
+                this.setIsPlaying(true);
+            }else{
+                this.setIsPlaying(false);
+            }   
+
+            var initial_slide_index = this.getIndexFromHash();
+            if(initial_slide_index){
+                this.current_index = initial_slide_index;                
+            }
+
+
+            // this.measureContents();
+            this.resizeImages();
+            this.addListeners();
+            //this.removeListeners()
+
+            this.setIndex(this.current_index); 
             
+
+        },
+        createContainers: function(){
+            this.original_slide_container = $(this.element).find("ul")[0];
+
             //Create containers
-            $('<div class="controls"><div class="container"></div></div>').insertBefore(carousel_contents);
+            $('<div class="controls"><div class="container"></div></div>').insertBefore(this.original_slide_container);
             this.controls_container = $(this.element).find(".controls > .container");
-            $('<div class="slides"><div class="container"></div></div>').insertBefore(carousel_contents);
+            $('<div class="slides"><div class="container"></div></div>').insertBefore(this.original_slide_container);
             this.slides_container = $(this.element).find(".slides > .container");
 
 
             //Clone original slides and hide
-            $(carousel_contents).find("li").each(function(index, item){
-                parent._original_slides[index] = $(item).clone();                
-            })            
-            $(carousel_contents).css("display", "none");
+            $(this.original_slide_container).css("display", "none");
 
 
             //populate controls container
             var arrows="<ul class='carousel-arrows'><li><a href='#' class='next'><span>Next</span></a></li><li><a href='#' class='previous'><span>Previous</span></a></li></ul>";
             var playpause="<ul class='carousel-play-pause'><li><a href='#play' class='play'><span>Play</span></a></li><li><a href='#pause' class='pause'><span>Pause</span></a></li></ul>";
-            var pagination = "<ul class='carousel-pagination'>";
-            $(slides).each(function(index, slide){
-                pagination += "<li><a href='#"+parent.options.pageAnchorPrefix+(index+1)+"'><span>Slide "+(index+1)+"</span></a></li>";
-            });
-            pagination += "</ul>";
+            var pagination = "<ul class='carousel-pagination'></ul>";
             $(this.controls_container).append($(pagination+arrows+playpause));
             
 
@@ -141,34 +162,80 @@
 
             this.carousel_pagination = $(this.controls_container).find("ul.carousel-pagination")[0]
             this.carousel_arrows = $(this.controls_container).find(".carousel-arrows")[0]
-
-
-            if(this.options.autoPlay==true){
-                this.setIsPlaying(true);
-            }else{
-                this.setIsPlaying(false);
-            }
-
-
-
-            var initial_slide_index = this.getIndexFromHash();
-            if(initial_slide_index){
-                this.current_index = initial_slide_index;                
-            }
-
-
-            // this.measureContents();
-            this.resizeImages();
-            this.addListeners();
-            //this.removeListeners()
-
-            this.setIndex(this.current_index);
-
         },
-        setIndex: function(target_index) {
-            // console.log("Set index: "+target_index)
-            if(this.can_animate == false){
+        startSlideQueue: function(){
+
+
+            var slides = $(this.original_slide_container).find("li");
+            var totalLoadedSlides = this._original_slides.length;
+            var totalSlides = $(slides).length;
+
+            // console.log("totalLoadedSlides: "+totalLoadedSlides+" of "+totalSlides)
+            if(totalSlides == totalLoadedSlides){
+                $(this.element).trigger('done-loading');
+            }else{
+                var nextSlide = slides[totalLoadedSlides];
+                this.addSlide(nextSlide, totalLoadedSlides);
+            }
+        },
+        addSlide: function (slide, index){
+            // console.log("Add slide at "+index)
+            index = ('undefined' === typeof index)? this._original_slides.length : index;
+            this.loadSlide(slide, index, this.slideLoaded)
+        },
+        loadSlide: function(slide, index, callback) {
+            var parent = this;
+            var image = $(slide).find("img")[0];
+            var isMeasured = parent.isImageMeasured(image);
+            if(isMeasured==false){
+
+                $("<img/>").attr("src", $(image).attr("src")).load(function() {
+                    $(image).data('inited', true);
+                    $(image).attr('data-inited', true);
+                    $(image).data('image-width', this.width);
+                    $(image).attr('data-image-width', this.width);
+                    $(image).data('image-height', this.height);
+                    $(image).attr('data-image-height', this.height);
+                    
+                    callback.call(parent, slide, index)
+                });
+            }
+        },
+        slideLoaded:function(slide, index){
+            
+            // console.log("slideLoaded: "+index)
+            var cloned = $(slide).clone();
+            this._original_slides.push(cloned)
+            
+            //Add pagination item...
+            var pagination_item = "<li><a href='#"+this.options.pageAnchorPrefix+(index+1)+"'><span>Slide "+(index+1)+"</span></a></li>";
+            $(this.controls_container).find(".carousel-pagination").append(pagination_item);
+
+            this.set_length = this._original_slides.length;
+            this.max_index = this.set_length - 1;
+
+            if(this.ready==false){
+                this.init();        
+            }else{
+
+                this.setIndex(this.current_index, true); 
+            }
+
+
+
+            this.startSlideQueue();
+            
+                
+        },
+        setIndex: function(target_index, force) {
+            if ('undefined' === typeof force) {
+                force = false;
+            }
+
+            //console.log("Set index: "+target_index+" this.can_animate: "+this.can_animate+" force: "+force)
+            if(this.can_animate == false && force == false){
                 this.next_index = target_index;
+
                 //block click, currently animating
                 return;
             }
@@ -180,14 +247,19 @@
             //console.log("the current index is "+this.current_index);
             //console.log("the max index is "+this.max_index);
             
-            this.render();
-        
+            $(this.element).trigger('index_change', [this.current_index]);
+
+            this.render(force);
+            
             this.setIsPlaying(this.is_playing);            
             
         },
         setIsPlaying:function(val){
             
             // console.log("set is_playing = "+val)
+            if(this.is_playing != val){
+                $(this.element).trigger('is_playing', [val]);
+            }
             this.is_playing = val;
 
             if(this.is_playing){
@@ -197,8 +269,10 @@
                 $(this.element).find(".controls a.pause").css("display", "none");
                 $(this.element).find(".controls a.play").css("display", "block");
             }
+
+
             
-            if(this.is_playing){
+            if(this.is_playing && this.set_length > 1){
                 var parent = this;
                 clearTimeout(this.autoprogress_timeout);
                 this.autoprogress_timeout = setTimeout(function(){
@@ -233,7 +307,19 @@
             }
             return index;
         },
-        render: function() {
+        getImageListContainer:function(){
+            if($(this.element).prop("tagName") == 'UL'){
+                return this.element;
+            }else if($(this.element).find('ul').length > 0){
+                return $(this.element).find('ul')[0];
+            }else{
+                return this.element;
+            }
+        },
+        render: function(force) {
+            if ('undefined' === typeof force) {
+                force = false;
+            }
             var parent = this; 
 
             //Handle logic for Animating Center Item
@@ -241,7 +327,7 @@
             var containerWidth = this.getContainerWidth();
 
             // console.log("columnWidth: "+columnWidth+" containerWidth: "+containerWidth)
-            var animationSpeed = 400;
+            var animationSpeed = force? 0 : 400;
             
 
             var center_indexes = this.getCenterIndexes(this.current_index, this.set_length);
@@ -263,15 +349,18 @@
             var target_offset_left = target_offset;// + columnWidth;
             var starting_offset_left = target_offset;//+ columnWidth;
             
-            var is_new_render = this.previous_rendered_index != this.current_index;
 
-            
+            var is_new_index = this.previous_rendered_index != this.current_index;
+            var is_new_set = this.previous_rendered_set_length != this.set_length;
+            var is_new_render = is_new_index || is_new_set;
+
+            // console.log("is_new_index: "+is_new_index+" is_new_render: "+is_new_render)
             // console.log("indexes for "+this.current_index+" are "+center_indexes)
             
 
             
             if(is_new_render ){
-
+                this.previous_rendered_set_length = this.set_length;
                 this.setImages(center_indexes, this.carousel_center, false);
                 this.setImages(center_indexes, this.carousel_right, false);
                 this.setImages(center_indexes, this.carousel_left, false);
@@ -340,27 +429,8 @@
             }
 
         },
-        measureImage: function(image) {
-            var parent = this;
-            
-            var isMeasured = parent.isImageMeasured(image);
-            if(isMeasured==false){
+        
 
-                $("<img/>").attr("src", $(image).attr("src")).load(function() {
-                    $(image).data('inited', true);
-                    $(image).attr('data-inited', true);
-                    $(image).data('image-width', this.width);
-                    $(image).attr('data-image-width', this.width);
-                    $(image).data('image-height', this.height);
-                    $(image).attr('data-image-height', this.height);
-                    
-                    //todo -- init
-                    parent.init();
-                });
-            }
-            
-            
-        },
         alignContainers:function(){
             var columnWidth = this.getImageColumnWidth();
 
@@ -512,6 +582,12 @@
             return indexes
         },
         reassignLinks : function(){
+
+            if(this.set_length<2){
+                $(this.controls_container).parent().addClass("disabled")
+            }else{
+                $(this.controls_container).parent().removeClass("disabled")
+            }
             
 
             //set next and previous 
