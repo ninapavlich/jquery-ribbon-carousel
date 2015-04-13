@@ -3,30 +3,13 @@
  */
 
 
-// the semi-colon before the function invocation is a safety
-// net against concatenated scripts and/or other plugins
-// that are not closed properly.
 ;(function ( $, window, document, undefined ) {
-
-    // undefined is used here as the undefined global
-    // variable in ECMAScript 3 and is mutable (i.e. it can
-    // be changed by someone else). undefined isn't really
-    // being passed in so we can ensure that its value is
-    // truly undefined. In ES5, undefined can no longer be
-    // modified.
-
-    // window and document are passed through as local
-    // variables rather than as globals, because this (slightly)
-    // quickens the resolution process and can be more
-    // efficiently minified (especially when both are
-    // regularly referenced in your plugin).
 
     // Create the defaults once
     var pluginName = "ribbonCarousel",
         defaults = {
             mobileBreak:767,
             autoPlay:false,
-            autoPlayDelay:5000,
             autoPlayInterval:5000,
             containerWidthPortion:1,
             useAnchors:false,
@@ -39,11 +22,6 @@
     function RibbonCarousel( element, options ) {
         this.element = element;
 
-        // jQuery has an extend method that merges the
-        // contents of two or more objects, storing the
-        // result in the first object. The first object
-        // is generally empty because we don't want to alter
-        // the default options for future instances of the plugin
         this.options = $.extend( {}, defaults, options) ;
         this.ready = false;
 
@@ -228,7 +206,6 @@
                     if(parent.is_playing){
                         var next_index = parent.getIndexAfter(parent.current_index);
 
-                        console.log("USE Anchors? "+parent.options.useAnchors)
                         if(parent.options.useAnchors==true){
                             document.location.hash = parent.options.pageAnchorPrefix+(next_index+1);                        
                         }else{
@@ -471,11 +448,13 @@
         //     }
         // },
         imageFill:function(img, container_width, container_height, original_width, original_height){
+            
             var scale_width = container_width / original_width;
             var scale_height = container_height / original_height;
 
-            // console.log("scale_width "+scale_width+" to get original width "+original_width+" to match "+container_width);
-            // console.log("scale_height "+scale_height+" to get original width "+original_height+" to match "+container_height);
+            //console.log("scale_width "+scale_width+" to get original width "+original_width+" to match "+container_width);
+            //console.log("scale_height "+scale_height+" to get original width "+original_height+" to match "+container_height);
+
 
             
 
@@ -487,12 +466,14 @@
                 $(img).css("margin-left", dx+"px");
                 $(img).css("margin-top", "0px");
 
+                //console.log("scale_height > scale_width... container_height = "+container_height+" dx: "+dx)
             }else{
                 $(img).css("height", "auto");
                 $(img).css("width", container_width+"px");
                 var dy = -0.5 * ((original_height * scale_width)- container_height);
                 $(img).css("margin-top", dy+"px");
                 $(img).css("margin-left", "0px");
+                //console.log("scale_height > scale_width... container_width = "+container_width+" dy: "+dy)
             }
         },
         getCenterIndexes:function(current_index, set_length){
