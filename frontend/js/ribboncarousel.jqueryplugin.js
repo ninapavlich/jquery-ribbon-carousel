@@ -32,6 +32,7 @@
         this._defaults = defaults;
         this._name = pluginName;
         this._original_slides = [];
+        this.attempted_index = 0;
         this.current_index = 0;
         this.previous_index = 0;
         this.previous_rendered_index = -1;
@@ -73,6 +74,12 @@
             $(this.element).addClass(this.options.themeClass);
 
 
+            if(this.options.useAnchors==true){
+                this.starting_loading_index = this.getIndexFromHash(window.location.hash);
+            }else{
+                this.starting_loading_index = 0;
+            }
+
             var parent = this;
             
             if(this.containers_inited==false){
@@ -111,11 +118,7 @@
                 this.setIsPlaying(false);
             }   
 
-            var initial_slide_index = this.getIndexFromHash();
-            if(initial_slide_index){
-                this.current_index = initial_slide_index;                
-            }
-
+            this.attempted_index = this.current_index = this.starting_loading_index;
 
             // this.measureContents();
             this.resizeImages();
@@ -182,6 +185,7 @@
             }
         },
         getNextSlideIndex: function(){
+            
             //Instead of loading in order, switch between loading first and last items
             //0, last, 1, last-1, 2, last-2
             var slides = $(this.original_slide_container).find("li");
@@ -196,7 +200,10 @@
             // console.log("nextSlideIndex: "+nextSlideIndex)
             this.loadedFromBeginning = !this.loadedFromBeginning;
             
-            return nextSlideIndex
+            var adjustedSlideIndex = (this.starting_loading_index+nextSlideIndex) % totalSlides;
+
+            // console.log("nextSlideIndex: "+nextSlideIndex+" adjustedSlideIndex: "+adjustedSlideIndex)
+            return adjustedSlideIndex
         },
         addSlide: function (slide, index){
             // console.log("Add slide at "+index)
@@ -253,10 +260,8 @@
             if(this.ready==false){
                 this.init();        
             }else{
-
-                this.setIndex(this.current_index, true); 
+                this.setIndex(this.attempted_index, true); 
             }
-
 
 
             this.startSlideQueue();
@@ -277,6 +282,7 @@
             }
 
             this.previous_index = this.current_index;
+            this.attempted_index = target_index;
             this.current_index = Math.max(Math.min(this.max_index, target_index), this.min_index)
             
             //console.log("the target index is "+target_index);
@@ -331,6 +337,10 @@
         getIndexFromHash:function(hash){
             if ('undefined' === typeof hash) {
                 hash = document.location.hash;
+            }
+
+            if(hash==''){
+                return 0;
             }
             
             var dePrefixed = hash.replace("#"+this.options.pageAnchorPrefix, '');
@@ -652,7 +662,6 @@
             
 
             $(this.element).find(".controls a").bind("click", function(e) {
-                console.log("try to prevent default...")
                 parent.controlLinkClicked(e, this);
             });
 
