@@ -298,7 +298,7 @@ $mobile_break: 768px;
 			display:none;
 		}
 
-		height:600px;
+		height:750px;
 		width:100%;
 		background-color:#ddd;
 		background-image: url(http://subtlepatterns.com/images/transp_bg.png);
@@ -306,17 +306,11 @@ $mobile_break: 768px;
 		border-bottom: 1px solid #eee;
 	}
 
-
-	
-
-
 	font-family: Helvetica, Arial, Sans-Serif;
 	background-color: #fff;	
-	height: 400px;
+	height: 375px;
 
-	.container{
-		max-width:600px;
-	}
+
 	figure{
 		margin:0;
 		padding:0;
@@ -420,7 +414,7 @@ $mobile_break: 768px;
 		.carousel-play-pause{
 			position:absolute;
 			z-index:100;
-			top: 560px;
+			/*top: 560px;*/
   			right: 0;
 
 
@@ -534,75 +528,75 @@ $mobile_break: 768px;
 }
 @media (min-width: 768px){
     .ribbon-carousel-theme-default{
-        height:384px;
+        /*height:480px;*/
         .container {
             max-width: 768px;
         }  
-        .controls{
+        /*.controls{
 	        .carousel-pagination{
-				top: 394px;
-			}
-			.carousel-play-pause{
-				top: 390px;
-	        }
-			.carousel-arrows{
-				top: 192px;
-			}
-        } 
+						top: 490px;
+					}
+					.carousel-play-pause{
+						top: 486px;
+			        }
+					.carousel-arrows{
+						top: 240px;
+					}
+        } */
     }
 }
 @media (min-width: 992px){
     .ribbon-carousel-theme-default{
-        height:496px;
+        /*height:620px;*/
         .container {
             max-width: 992px;
         }   
-        .controls{
+        /*.controls{
 	        .carousel-pagination{
-				top: 506px;
+				top: 630px;
 			}
 			.carousel-play-pause{
-				top: 502px;
+				top: 626px;
 	        }
 			.carousel-arrows{
-				top: 248px;
+				top: 310;
 			}
-        }  
+        }  */
     }
 }
 @media (min-width: 1200px){
     .ribbon-carousel-theme-default{
-        height:600px;
+        /*height:750px;*/
         .container {
             max-width: 1200px;
         }  
-        .controls{
+        /*.controls{
 	        .carousel-pagination{
-				top: 610px;
+				top: 760px;
 			}
 			.carousel-play-pause{
-				top: 606px;
+				top: 756px;
 	        }
 			.carousel-arrows{
-				top: 300px;
+				top: 375px;
 			}
-        }  
+        }  */
     }
 }
 
 
 @media (max-width: 768px){
     .ribbon-carousel-theme-default{
-        .controls{
+        /*.controls{
 	        .carousel-pagination{
-				top: 404px;
+				top: 385px;
 			}
 			.carousel-play-pause{
-				top: 400px;
+				top: 381px;
 	        }
 			.carousel-arrows{
-				top: 192px;
+				top: 187px;
 			}
-        }
+        }*/
     }
 }

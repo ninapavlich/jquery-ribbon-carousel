@@ -36,6 +36,15 @@
             </ul>            
         </div>
 
+
+**Required Libraries**
+
+    <script src="js/vendor/jquery-1.11.2.min.js"></script>
+
+    <!-- Required for draggability -->
+    <script src="js/vendor/jquery-ui.min.js"></script>
+    <script src="js/vendor/jquery.ui.touch-punch.min.js"></script>
+
 **Javascript**
 
     <script>
@@ -56,11 +65,17 @@ Auto-play carousel
 **autoPlayInterval:5000**
 Seconds between slides if auto-play is turned on
 
+**maxAutoPlayIntervals:0**
+Number of times that auto-play runs before pausing. Auto-play will play indefinitely if set to 0.
+
 **useAnchors:false**
-Set window hash value; gives each slides a unique URL
+Update window hash so that specific slides can be bookmarkable.
 
 **pageAnchorPrefix:'slide'**
 Window hash prefix used if useAnchors is true. For example, if the second slide is selected, the window url would be: http://www.example.com/#slide2
 
 **themeClass:'ribbon-carousel-theme-default'**
 The css class to add to the container
+
+**aspectRatio:null**
+Aspect ratio used -- based on width of slide container -- to establish the height of the slides. If left null, it will calculate the average aspect ratio of all the slides and use that.

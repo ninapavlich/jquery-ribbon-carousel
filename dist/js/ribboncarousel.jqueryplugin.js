@@ -11,10 +11,12 @@
             mobileBreak:767,
             autoPlay:false,
             autoPlayInterval:5000,
+            maxAutoPlayIntervals:0,
             containerWidthPortion:1,
             useAnchors:false,
             pageAnchorPrefix:'slide',
-            themeClass:'ribbon-carousel-theme-default'
+            themeClass:'ribbon-carousel-theme-default',
+            aspectRatio:null
 
         };
 
@@ -36,6 +38,7 @@
         this.current_index = 0;
         this.previous_index = 0;
         this.previous_rendered_index = -1;
+        this.previous_rendered_platform = null;
         this.dot_index = 0;
         this.min_index = 0;
         this.max_index = null;
@@ -44,9 +47,24 @@
         this.loadedFromBeginning = false;
 
 
+        this.draggable_inited = false;
+        this.is_dragging = false;
+        this.drag_direction = 0;
+        this.start_drag_position = null;
+        this.start_drag_position_left = null;
+        this.start_drag_position_right = null;
+        this.stop_drag_position = null;
+        this.stop_drag_position_left = null;
+        this.stop_drag_position_right = null;
+        this.drag_timeout = null;
+
+
         this.is_playing = false;
         this.autoprogress_timeout = -1;
+        this.current_autoplay_interval = 0;
 
+        this.average_aspect_ratio = 1.6; //default
+        this.aspect_ratio = this.average_aspect_ratio;
 
         //Dynamically created
         this.slides_container = null;
@@ -177,14 +195,18 @@
             // console.log("totalLoadedSlides: "+totalLoadedSlides+" of "+totalSlides)
             if(totalSlides == totalLoadedSlides){
                 $(this.element).trigger('done-loading');
-                this.addPaginationListeners();
+                this.addPaginationListeners();                
             }else{
-                var nextSlideIndex = this.getNextSlideIndex();
+                var nextSlideIndex = this.getNextSlideLoadIndex();
                 var nextSlide = slides[nextSlideIndex];
                 this.addSlide(nextSlide, nextSlideIndex);
             }
+
+            this.initDraggable();
+
+            
         },
-        getNextSlideIndex: function(){
+        getNextSlideLoadIndex: function(){
             
             //Instead of loading in order, switch between loading first and last items
             //0, last, 1, last-1, 2, last-2
@@ -211,26 +233,35 @@
             this.loadSlide(slide, index, this.slideLoaded)
         },
         loadSlide: function(slide, index, callback) {
+            
             var parent = this;
             var image = $(slide).find("img")[0];
             var isMeasured = parent.isImageMeasured(image);
             if(isMeasured==false){
 
-                $("<img/>").attr("src", $(image).attr("src")).load(function() {
+                var url = parent.getImageSrc(image);
+                $(image).attr("src", url);
+                $("<img/>").attr("src", url).load(function() {
                     $(image).data('inited', true);
                     $(image).attr('data-inited', true);
                     
-                    $(image).data('image-width', this.width);
-                    $(image).attr('data-image-width', this.width);
-
-                    $(image).data('image-height', this.height);
-                    $(image).attr('data-image-height', this.height);
+                    var aspect_ratio = this.width / this.height;
+                    
+                    $(image).data('image-aspect-ratio', aspect_ratio);
+                    $(image).attr('data-image-aspect-ratio', aspect_ratio);
 
                     $(slide).data('index', index);
                     $(slide).attr('data-index', index);
                     
                     callback.call(parent, slide, index)
                 });
+            }
+        },
+        getImageSrc:function(image){
+            if(this.isMobile()){
+                return $(image).attr("data-mobile");
+            }else{
+                return $(image).attr("data-desktop");
             }
         },
         slideLoaded:function(slide, index){
@@ -256,6 +287,9 @@
 
             this.set_length = this._original_slides.length;
             this.max_index = this.set_length - 1;
+
+            this.average_aspect_ratio = this.calculateAverageAspectRatio();
+            this.aspect_ratio = this.options.aspectRatio==null? this.average_aspect_ratio : this.options.aspectRatio;
 
             if(this.ready==false){
                 this.init();        
@@ -296,11 +330,21 @@
             this.setIsPlaying(this.is_playing);            
             
         },
+        getNextSlideIndex: function(){
+            return (this.current_index + 1) % this.set_length;
+        },
+        getPreviousSlideIndex: function(){
+            return (this.current_index + this.set_length - 1) % this.set_length;
+        },
         setIsPlaying:function(val){
-            
+            var parent = this;
+
             // console.log("set is_playing = "+val)
             if(this.is_playing != val){
                 $(this.element).trigger('is_playing', [val]);
+
+                //reset current autoplay interval
+                this.current_autoplay_interval = 0;
             }
             this.is_playing = val;
 
@@ -313,23 +357,30 @@
             }
 
 
+
+
             
             if(this.is_playing && this.set_length > 1){
-                var parent = this;
+                
                 clearTimeout(this.autoprogress_timeout);
-                this.autoprogress_timeout = setTimeout(function(){
 
-                    if(parent.is_playing){
-                        var next_index = parent.getIndexAfter(parent.current_index);
+                var canAutoPlay = this.options.maxAutoPlayIntervals <= 0 || (this.set_length * this.options.maxAutoPlayIntervals) > this.current_autoplay_interval
+                
+                if( canAutoPlay ){
+                    this.autoprogress_timeout = setTimeout(function(){
+                        parent.current_autoplay_interval += 1;
+                
+                        if(parent.is_playing){
+                            var next_index = parent.getIndexAfter(parent.current_index);
 
-                        if(parent.options.useAnchors==true){
-                            document.location.hash = parent.options.pageAnchorPrefix+(next_index+1);                        
-                        }else{
-                            parent.setIndex(next_index);
+                            if(parent.options.useAnchors==true){
+                                document.location.hash = parent.options.pageAnchorPrefix+(next_index+1);                        
+                            }else{
+                                parent.setIndex(next_index);
+                            }
                         }
-                    }                    
-
-                }, this.options.autoPlayInterval); 
+                    }, this.options.autoPlayInterval); 
+                }
             }else if(this.is_playing==false){
                 clearTimeout(this.autoprogress_timeout);
             }
@@ -368,12 +419,15 @@
             }
             var parent = this; 
 
+
             //Handle logic for Animating Center Item
             var columnWidth = this.getImageColumnWidth();
             var containerWidth = this.getContainerWidth();
 
             // console.log("columnWidth: "+columnWidth+" containerWidth: "+containerWidth)
-            var animationSpeed = force? 0 : 400;
+            var targetAnimationDuration = force? 0 : 400;
+            var minTargetAnimationDuration = force? 0 : 200;
+
             
 
             var center_indexes = this.getCenterIndexes(this.current_index, this.set_length);
@@ -387,45 +441,62 @@
 
             var center_index = Math.floor(center_indexes.length/2);
             var target_offset = 0-(columnWidth*center_index);
-            var starting_offset = moving_right? (target_offset + (moving_distance*columnWidth)) : (target_offset - (moving_distance*columnWidth));
+            var starting_offset = this.stop_drag_position!=null? moving_right? (this.stop_drag_position+columnWidth) : (this.stop_drag_position-columnWidth) : moving_right? (target_offset + (moving_distance*columnWidth)) : (target_offset - (moving_distance*columnWidth));
+
 
             var target_offset_right = target_offset - columnWidth;
             var starting_offset_right = starting_offset - columnWidth;
 
             var target_offset_left = target_offset;// + columnWidth;
             var starting_offset_left = target_offset;//+ columnWidth;
-            
+            var isMobile = this.isMobile()
+            var platform = isMobile? 'mobile' : 'desktop';
 
             var is_new_index = this.previous_rendered_index != this.current_index;
             var is_new_set = this.previous_rendered_set_length != this.set_length;
-            var is_new_render = is_new_index || is_new_set;
+            var is_new_platform = this.previous_rendered_platform != platform;
+            var is_new_render = is_new_index || is_new_set || is_new_platform;
 
             // console.log("is_new_index: "+is_new_index+" is_new_render: "+is_new_render)
             // console.log("indexes for "+this.current_index+" are "+center_indexes)
+            // console.log("is_new_platform: "+is_new_platform)
             
-
-            
-            if(is_new_render ){
+            if(is_new_render){
                 this.previous_rendered_set_length = this.set_length;
+                this.previous_rendered_platform = platform;
                 this.setImages(center_indexes, this.carousel_center, false);
-                this.setImages(center_indexes, this.carousel_right, false);
-                this.setImages(center_indexes, this.carousel_left, false);
+
+                if(this.isMobile()){
+                    this.setImages([], this.carousel_right, false);
+                    this.setImages([], this.carousel_left, false);
+                }else{
+                    this.setImages(center_indexes, this.carousel_right, false);
+                    this.setImages(center_indexes, this.carousel_left, false);
+                }
+                
 
                 this.can_animate = false;
+
+                var distanceToTravel = Math.abs(starting_offset-target_offset);
+                var distancePortion = Math.min(1, distanceToTravel/columnWidth);
+
+                var animationDuration = targetAnimationDuration;//minTargetAnimationDuration + (distancePortion * (targetAnimationDuration-minTargetAnimationDuration));
+                
                 $( this.carousel_center ).css("left", starting_offset+"px");
-                $( this.carousel_center ).animate({ left:target_offset }, animationSpeed);
+                $( this.carousel_center ).animate({ left:target_offset }, animationDuration);
+
 
                 $( this.carousel_right ).css("left", starting_offset_right+"px");
-                $( this.carousel_right ).animate({ left:target_offset_right }, animationSpeed);
+                $( this.carousel_right ).animate({ left:target_offset_right }, animationDuration);
 
                 $( this.carousel_left ).css("left", starting_offset+"px");
-                $( this.carousel_left ).animate({ left:target_offset }, animationSpeed);
+                $( this.carousel_left ).animate({ left:target_offset }, animationDuration);
 
 
                 this.can_animate = false;
                 setTimeout(function(){
                     parent.can_animate = true
-                }, animationSpeed+100)
+                }, animationDuration+100)
 
 
                 if(this.current_index != this.previous_index){                    
@@ -449,6 +520,7 @@
             
 
             this.previous_rendered_index = this.current_index;
+            this.stop_drag_position = null;
 
         },
         isImageMeasured: function(image) {
@@ -459,8 +531,8 @@
 
             }else{
                 
-                if( typeof($(image).data('image-width')) !== 'undefined' && 
-                    typeof($(image).data('image-width')) !== 'undefined'){
+                if( typeof($(image).data('image-aspect-ratio')) !== 'undefined' && 
+                    typeof($(image).data('image-aspect-ratio')) !== 'undefined'){
                     //woooohaa, it's already inited!
                     $(image).data('inited', true);
                     
@@ -509,6 +581,18 @@
         resizeImages:function(){
             //for each image, scale to fill its container
             var columnWidth = this.getImageColumnWidth();
+
+            var columnHeight = Math.round(columnWidth / this.aspect_ratio);
+            var halfHeight = Math.round(columnHeight*0.5);
+
+            // console.log("columnWidth: "+columnWidth+" columnHeight: "+columnHeight+" aspectRatio: "+this.aspect_ratio)
+            
+            $(this.element).css("height", columnHeight);
+
+            $(this.element).find(".carousel-arrows").css("top", halfHeight);
+            $(this.element).find(".carousel-pagination").css("top", columnHeight);
+            $(this.element).find(".carousel-play-pause").css("top", columnHeight);
+            
             
             $(this.element).find("ul.carousel-left > li").each(function(index, item){
                 $(this).width(columnWidth)
@@ -528,13 +612,18 @@
             $(set).each(function(index, item){
 
                 var img = $(this).find("img");
-                var original_width = $(img).data("image-width");
-                var original_height = $(img).data("image-height");
+
+                var url = parent.getImageSrc(img);
+                $(img).attr("src", url);
+
+                var original_aspect_ratio = $(img).data("image-aspect-ratio");
                 var container_width = $(this).outerWidth();
                 var container_height = $(this).outerHeight();
 
+                // console.log("container_width: "+container_width+" container_height: "+container_height+" original_aspect_ratio: "+original_aspect_ratio)
+
                 // if(parent.options.imageFill){
-                    parent.imageFill(img, container_width, container_height, original_width, original_height);    
+                    parent.imageFill(img, container_width, container_height, original_aspect_ratio);    
                 // }else{
                 //     parent.imageFit(img, container_width, container_height, original_width, original_height);
                 // }
@@ -563,34 +652,42 @@
         //         $(img).css("margin-left", "0px");
         //     }
         // },
-        imageFill:function(img, container_width, container_height, original_width, original_height){
-            
-            var scale_width = container_width / original_width;
-            var scale_height = container_height / original_height;
+        imageFill:function(img, container_width, container_height, original_aspect_ratio){
 
-            //console.log("scale_width "+scale_width+" to get original width "+original_width+" to match "+container_width);
-            //console.log("scale_height "+scale_height+" to get original width "+original_height+" to match "+container_height);
 
+            var container_aspect_ratio = container_width / container_height;
 
             
+           
+            if(original_aspect_ratio > container_aspect_ratio){
+                //image is wider than container... scale to height and chop sides
 
-            if(scale_height > scale_width){
 
                 $(img).css("width", "auto");
                 $(img).css("height", container_height+"px");
-                var dx = -0.5 * ((original_width * scale_height)- container_width);
+                var image_width = original_aspect_ratio * container_height;
+                var dx = -0.5 * (image_width - container_width);
+
+
                 $(img).css("margin-left", dx+"px");
                 $(img).css("margin-top", "0px");
 
-                //console.log("scale_height > scale_width... container_height = "+container_height+" dx: "+dx)
+
             }else{
+                //image is taller than container ... scale to width and chop top and bottom
+
                 $(img).css("height", "auto");
                 $(img).css("width", container_width+"px");
-                var dy = -0.5 * ((original_height * scale_width)- container_height);
+                var image_height = container_width / original_aspect_ratio;
+
+
+                var dy = -0.5 * (image_height - container_height);
+
                 $(img).css("margin-top", dy+"px");
                 $(img).css("margin-left", "0px");
-                //console.log("scale_height > scale_width... container_width = "+container_width+" dy: "+dy)
             }
+            
+
         },
         getCenterIndexes:function(current_index, set_length){
             return this.getBeforeImageSet(current_index, set_length).concat([current_index]).concat(this.getAfterImageSet(current_index, set_length))
@@ -637,8 +734,10 @@
             
 
             //set next and previous 
-            var next_index = (this.current_index + 1) % this.set_length;
-            var prev_index = (this.current_index + this.set_length - 1) % this.set_length;
+            var next_index = this.getNextSlideIndex();
+            var prev_index = this.getPreviousSlideIndex();
+
+            
 
             var new_next_url = "#"+this.options.pageAnchorPrefix+(next_index+1);
             var new_prev_url = "#"+this.options.pageAnchorPrefix+(prev_index+1);
@@ -670,7 +769,8 @@
                 // parent.measureContents();
                 parent.resizeImages();
                 parent.resizeContainers();
-                parent.alignContainers();                
+                parent.alignContainers();  
+                parent.render();              
             });
 
             $(window).bind('hashchange', function(event) {
@@ -679,6 +779,8 @@
                 parent.setIndex(newIndex);
 
             });
+
+            
         },
         addPaginationListeners: function(){
             var parent = this;
@@ -753,6 +855,19 @@
             var w = $(this.slides_container).outerWidth();
             return w * this.options.containerWidthPortion;
         },
+        calculateAverageAspectRatio:function(){
+
+            var parent = this;
+            var set = $(this.element).find("ul.carousel-center > li"); 
+            var total = 0;
+            $(set).each(function(index, item){
+                var img = $(this).find("img");
+                var original_aspect_ratio = parseFloat($(img).data("image-aspect-ratio"));
+                total += original_aspect_ratio;
+            });
+
+            return total / set.length;
+        },
         getContainerWidth:function(){
             var w = $(this.slides_container).outerWidth();
             return w;
@@ -808,6 +923,91 @@
         },
         getIndexBefore:function(index){
             return (index+this.set_length-1)%this.set_length
+        },
+        isMobile:function(){
+            var columnWidth = this.getImageColumnWidth();
+            return columnWidth <= this.mobile_break
+        },
+        initDraggable : function(){
+            if(this.draggable_inited==true){
+                return;
+            }
+            
+            this.carousel_center
+            try{
+                $( this.carousel_center).draggable( "destroy" );
+            }catch(e){
+                //
+            }
+            $( this.carousel_center).draggable({
+                snap: false,
+                axis: 'x'
+            });
+
+            var parent = this;
+            $( this.carousel_center ).bind("dragstart", function(event, ui ){
+                parent.onDragStart();
+            });
+
+            $( this.carousel_center ).bind("drag", function(event, ui ){
+                parent.onDrag();
+            });
+
+            $( this.carousel_center ).bind("dragstop", function(event, ui ){
+                parent.onDragStop();
+            });
+            this.draggable_inited = true;
+        },
+        onDragStart : function(){
+            //update container:
+            //console.log("drag start! container? "+this.slides_container+" "+$(this.slides_container).css("left"))
+            
+            this.is_dragging = true;
+            this.start_drag_position = parseInt($(this.carousel_center).css("left"));
+            this.start_drag_position_left = parseInt($(this.carousel_left).css("left"));
+            this.start_drag_position_right = parseInt($(this.carousel_right).css("left"));
+            
+            clearTimeout( this.drag_timeout )
+
+        },
+        onDrag : function(){
+
+            
+            var left_pos = parseInt($(this.carousel_center).css("left"))
+            var drag_offset = this.start_drag_position - left_pos;
+            // console.log("drag! this.start_drag_position? "+this.start_drag_position+" left_pos? "+left_pos)
+            this.drag_direction = Math.abs(drag_offset) / drag_offset;
+
+            $(this.carousel_left).css("left", this.start_drag_position_left - drag_offset)
+            $(this.carousel_right).css("left", this.start_drag_position_right - drag_offset)
+            
+        },
+        onDragStop : function(){
+            
+            var target_index = this.current_index;
+
+            this.stop_drag_position = parseInt($(this.carousel_center).css("left"));
+            this.stop_drag_position_left = parseInt($(this.carousel_left).css("left"));
+            this.stop_drag_position_right = parseInt($(this.carousel_right).css("left"));
+            
+            if(this.drag_direction > 0){
+                target_index = this.getNextSlideIndex();
+            }else{
+                target_index = this.getPreviousSlideIndex();
+            }
+            if(this.options.useAnchors==true){
+                document.location.hash = this.options.pageAnchorPrefix+(target_index+1);                        
+            }else{
+                this.setIndex(target_index);
+            }
+            
+
+
+            var parent = this;
+            this.drag_timeout = setTimeout(function(){
+                parent.is_dragging = false;
+            },100)
+
         }
 
     };
