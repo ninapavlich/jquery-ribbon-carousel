@@ -1,6 +1,6 @@
 # jquery-ribbon-carousel
 
-[View a simple demo here](http://htmlpreview.github.io/?https://github.com/ninapavlich/jquery-ribbon-carousel/blob/master/example.html)
+[View a simple demo here](https://cdn.rawgit.com/ninapavlich/jquery-ribbon-carousel/master/example.html)
 
 ![alt text](https://raw.githubusercontent.com/ninapavlich/jquery-ribbon-carousel/master/docs/screenshot.png "Very Simple Screenshot")
 
