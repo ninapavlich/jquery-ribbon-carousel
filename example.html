@@ -13,7 +13,7 @@
         
         <link rel="stylesheet" href="dist/css/ribboncarousel.css">
 
-        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 
         <script src="js/vendor/modernizr-2.8.3.min.js"></script>
 
@@ -52,7 +52,9 @@
     &lt;script&gt;
     $('.ribbon-carousel').ribbonCarousel({
         'autoPlay':false,
-        'useAnchors':true
+        'useAnchors':true,
+        'aspectRatio':2,
+        'maxAutoPlayIntervals':0
     });
     &lt;/script&gt;
         </code></pre>
@@ -206,9 +208,9 @@
 
         <script>
         $('.ribbon-carousel').ribbonCarousel({
-            'autoPlay':true,
+            'autoPlay':false,
             'useAnchors':true,
-            'aspectRatio':1.7,
+            'aspectRatio':2,
             'maxAutoPlayIntervals':0
         });
         </script>

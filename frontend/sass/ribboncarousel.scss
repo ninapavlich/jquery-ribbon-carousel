@@ -362,14 +362,14 @@ $mobile_break: 768px;
 			text-decoration:none;
 			margin: 0;
   			padding: 0.3em;
-  			color:#666;
+  			color:#fff;
   			font-size: 12px;
 
 			&:hover, &:focus{
-				color:#333;
+				color:#ccc;
 			}
 			&.active{
-				color:#666;
+				color:#fff;
 			}
 
 		}
@@ -381,6 +381,9 @@ $mobile_break: 768px;
 			padding:0;
 			margin:0;
 
+			background-color: rgba(0, 0, 0, 0.6);
+			padding: 10px 15px;
+
 
 			li{
 				float:left;
@@ -389,6 +392,9 @@ $mobile_break: 768px;
 				a{	
 					margin-right: 5px;
 					font-family: FontAwesome;
+					font-size: 12px;
+
+					color:#fff;
 					
 					span{
 						display:none;
@@ -417,6 +423,8 @@ $mobile_break: 768px;
 			/*top: 560px;*/
   			right: 0;
 
+  		background-color: rgba(0, 0, 0, 0.6);
+			padding: 10px 15px;
 
 			li{
 				float:right;
@@ -424,6 +432,7 @@ $mobile_break: 768px;
 
 			a{
 				font-family: FontAwesome;
+				font-size: 18px;
 				span{
 					display:none;
 				}
