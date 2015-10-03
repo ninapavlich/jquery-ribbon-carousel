@@ -12,6 +12,7 @@
 
         
         <link rel="stylesheet" href="dist/css/ribboncarousel.css">
+        <link rel="stylesheet" href="dist/css/ribboncarousel.defaulttheme.css">
 
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 
@@ -24,7 +25,7 @@
             }
             code{
                 font-family: Consolas, Monaco, monospace;
-                width:600px;
+                width:800px;
                 margin:auto;
                 padding: 15px;
                 white-space: pre;
@@ -40,6 +41,16 @@
 
             }
 
+            .container{
+                width:100%;
+                max-width:800px;
+                margin:auto;
+            }
+            .row{
+                overflow: hidden;
+                width: 100%;
+            }
+
         </style>
     </head>
     <body>
@@ -52,149 +63,161 @@
     &lt;script&gt;
     $('.ribbon-carousel').ribbonCarousel({
         'autoPlay':false,
+        'autoPlayInterval':7000,
+        'animationDuration':500,
+        'maxAutoPlayIntervals':1,
         'useAnchors':true,
-        'aspectRatio':2,
-        'maxAutoPlayIntervals':0
+        'pageAnchorPrefix':'slide-',
+        'themeClass':'ribbon-carousel-theme-default',
+        'slideWidth':null,
+        'slideHeight':null,
+        'aspectRatio':null,
+        'minimumLoad':1,
+        'bufferSides':2
     });
     &lt;/script&gt;
         </code></pre>
-        <div class="ribbon-carousel">    
-            <ul>
-                <li>
-                    <a href="https://chrisharburg.herokuapp.com/portfolio/beautiful-brides/">
-                    <figure>
-                        <img alt="A bride splashes in the ocean at a beach wedding in North Carolina" data-desktop="https://chrisharburg.s3.amazonaws.com/media/CACHE/images/image/a-bride-splashes-in-the-ocean-at-a-beach-wedding-in-north-carolinajpg/e9e9e860cbc2a41a7b684d7ce6602378.jpg" data-mobile="https://chrisharburg.s3.amazonaws.com/media/CACHE/images/image/a-bride-splashes-in-the-ocean-at-a-beach-wedding-in-north-carolinajpg/f5d479fd25f82faf852bccb13bd89def.jpg" src="https://chrisharburg.s3.amazonaws.com/media/CACHE/images/image/a-bride-splashes-in-the-ocean-at-a-beach-wedding-in-north-carolinajpg/f5d479fd25f82faf852bccb13bd89def.jpg">
-                    </figure></a>
-                </li>
+        <div class="row">
+            <div class="container">
+                <div class="ribbon-carousel">    
+                    <ul>
+                        <li>
+                            <a href="https://chrisharburg.herokuapp.com/portfolio/beautiful-brides/">
+                            <figure>
+                                <img alt="A bride splashes in the ocean at a beach wedding in North Carolina" data-desktop="https://chrisharburg.s3.amazonaws.com/media/CACHE/images/image/a-bride-splashes-in-the-ocean-at-a-beach-wedding-in-north-carolinajpg/e9e9e860cbc2a41a7b684d7ce6602378.jpg" data-mobile="https://chrisharburg.s3.amazonaws.com/media/CACHE/images/image/a-bride-splashes-in-the-ocean-at-a-beach-wedding-in-north-carolinajpg/f5d479fd25f82faf852bccb13bd89def.jpg" src="https://chrisharburg.s3.amazonaws.com/media/CACHE/images/image/a-bride-splashes-in-the-ocean-at-a-beach-wedding-in-north-carolinajpg/f5d479fd25f82faf852bccb13bd89def.jpg">
+                            </figure></a>
+                        </li>
 
-                <li>
-                    <a href="https://chrisharburg.herokuapp.com/portfolio/beautiful-brides/">
-                    <figure>
-                        <img alt="" data-desktop="https://chrisharburg.s3.amazonaws.com/media/CACHE/images/image/bride-portrait-window-morning-glory-inn-north-carolinajpg/52ee1a598f0e8147b8dae640aae910d8.jpg" data-mobile="https://chrisharburg.s3.amazonaws.com/media/CACHE/images/image/bride-portrait-window-morning-glory-inn-north-carolinajpg/e351e677884adddfc64186e6d275bddd.jpg" src="https://chrisharburg.s3.amazonaws.com/media/CACHE/images/image/bride-portrait-window-morning-glory-inn-north-carolinajpg/e351e677884adddfc64186e6d275bddd.jpg">
-                    </figure></a>
-                </li>
+                        <li>
+                            <a href="https://chrisharburg.herokuapp.com/portfolio/beautiful-brides/">
+                            <figure>
+                                <img alt="" data-desktop="https://chrisharburg.s3.amazonaws.com/media/CACHE/images/image/bride-portrait-window-morning-glory-inn-north-carolinajpg/52ee1a598f0e8147b8dae640aae910d8.jpg" data-mobile="https://chrisharburg.s3.amazonaws.com/media/CACHE/images/image/bride-portrait-window-morning-glory-inn-north-carolinajpg/e351e677884adddfc64186e6d275bddd.jpg" src="https://chrisharburg.s3.amazonaws.com/media/CACHE/images/image/bride-portrait-window-morning-glory-inn-north-carolinajpg/e351e677884adddfc64186e6d275bddd.jpg">
+                            </figure></a>
+                        </li>
 
-                <li>
-                    <a href="https://chrisharburg.herokuapp.com/portfolio/weddings/">
-                    <figure>
-                        <img alt="" data-desktop="https://chrisharburg.s3.amazonaws.com/media/CACHE/images/image/wedding-reception-hilton-garden-inn2jpg/865fb765ae7a17856580794d602c9d59.jpg" data-mobile="https://chrisharburg.s3.amazonaws.com/media/CACHE/images/image/wedding-reception-hilton-garden-inn2jpg/befac3cfa11e59fa9bc3c4ab7f49fbb2.jpg" src="https://chrisharburg.s3.amazonaws.com/media/CACHE/images/image/wedding-reception-hilton-garden-inn2jpg/befac3cfa11e59fa9bc3c4ab7f49fbb2.jpg">
-                    </figure></a>
-                </li>
+                        <li>
+                            <a href="https://chrisharburg.herokuapp.com/portfolio/weddings/">
+                            <figure>
+                                <img alt="" data-desktop="https://chrisharburg.s3.amazonaws.com/media/CACHE/images/image/wedding-reception-hilton-garden-inn2jpg/865fb765ae7a17856580794d602c9d59.jpg" data-mobile="https://chrisharburg.s3.amazonaws.com/media/CACHE/images/image/wedding-reception-hilton-garden-inn2jpg/befac3cfa11e59fa9bc3c4ab7f49fbb2.jpg" src="https://chrisharburg.s3.amazonaws.com/media/CACHE/images/image/wedding-reception-hilton-garden-inn2jpg/befac3cfa11e59fa9bc3c4ab7f49fbb2.jpg">
+                            </figure></a>
+                        </li>
 
-                <li>
-                    <a href="https://chrisharburg.herokuapp.com/portfolio/weddings/">
-                    <figure>
-                        <img alt="A bride hugging her flower girl at a wedding in the Clemmons Educational State Forest" data-desktop="https://chrisharburg.s3.amazonaws.com/media/CACHE/images/image/wedding-clayton-flower-girljpg/c8a79ee0c6385a93961bf725d53d288b.jpg" data-mobile="https://chrisharburg.s3.amazonaws.com/media/CACHE/images/image/wedding-clayton-flower-girljpg/3de80e737b2aead7abcd95f9d7c8447a.jpg" src="https://chrisharburg.s3.amazonaws.com/media/CACHE/images/image/wedding-clayton-flower-girljpg/3de80e737b2aead7abcd95f9d7c8447a.jpg">
-                    </figure></a>
-                </li>
+                        <li>
+                            <a href="https://chrisharburg.herokuapp.com/portfolio/weddings/">
+                            <figure>
+                                <img alt="A bride hugging her flower girl at a wedding in the Clemmons Educational State Forest" data-desktop="https://chrisharburg.s3.amazonaws.com/media/CACHE/images/image/wedding-clayton-flower-girljpg/c8a79ee0c6385a93961bf725d53d288b.jpg" data-mobile="https://chrisharburg.s3.amazonaws.com/media/CACHE/images/image/wedding-clayton-flower-girljpg/3de80e737b2aead7abcd95f9d7c8447a.jpg" src="https://chrisharburg.s3.amazonaws.com/media/CACHE/images/image/wedding-clayton-flower-girljpg/3de80e737b2aead7abcd95f9d7c8447a.jpg">
+                            </figure></a>
+                        </li>
 
-                <li>
-                    <a href="https://chrisharburg.herokuapp.com/portfolio/weddings/">
-                    <figure>
-                        <img alt="" data-desktop="https://chrisharburg.s3.amazonaws.com/media/CACHE/images/image/wedding-brick-and-morter-receptionjpg/7a1ad93a525942671416fae409bea693.jpg" data-mobile="https://chrisharburg.s3.amazonaws.com/media/CACHE/images/image/wedding-brick-and-morter-receptionjpg/b725d1a4d039e2b4790ee57847a4f1ca.jpg" src="https://chrisharburg.s3.amazonaws.com/media/CACHE/images/image/wedding-brick-and-morter-receptionjpg/b725d1a4d039e2b4790ee57847a4f1ca.jpg">
-                    </figure></a>
-                </li>
+                        <li>
+                            <a href="https://chrisharburg.herokuapp.com/portfolio/weddings/">
+                            <figure>
+                                <img alt="" data-desktop="https://chrisharburg.s3.amazonaws.com/media/CACHE/images/image/wedding-brick-and-morter-receptionjpg/7a1ad93a525942671416fae409bea693.jpg" data-mobile="https://chrisharburg.s3.amazonaws.com/media/CACHE/images/image/wedding-brick-and-morter-receptionjpg/b725d1a4d039e2b4790ee57847a4f1ca.jpg" src="https://chrisharburg.s3.amazonaws.com/media/CACHE/images/image/wedding-brick-and-morter-receptionjpg/b725d1a4d039e2b4790ee57847a4f1ca.jpg">
+                            </figure></a>
+                        </li>
 
+                        
+                    
                 
-            
-        
-        
-            
-            
                 
+                    
+                    
+                        
 
-                <li>                
-                    <a href="http://www.example.com">
-                        <figure>
-                            <img 
-                            src="http://placehold.it/400x200" 
-                            data-mobile="http://placehold.it/400x200" 
-                            data-desktop="http://placehold.it/1200x700" 
-                            alt="Image alt" />                        
-                            <figcaption>
-                                <h4>Slide 6</h4>
-                                Image Caption that contains <a href="http://www.google.com">a link</a>.
+                        <li>                
+                            <a href="http://www.example.com">
+                                <figure>
+                                    <img 
+                                    src="http://placehold.it/400x200" 
+                                    data-mobile="http://placehold.it/400x200" 
+                                    data-desktop="http://placehold.it/1200x700" 
+                                    alt="Image alt" />                        
+                                    <figcaption>
+                                        <h4>Slide 6</h4>
+                                        Image Caption that contains <a href="http://www.google.com">a link</a>.
 
 
-                            </figcaption>
-                        </figure>
-                    </a>
-                </li>
-                <li>                
-                
-                    <figure>
-                        <img 
-                            src="http://placehold.it/400x200" 
-                            data-mobile="http://placehold.it/400x200" 
-                            data-desktop="http://placehold.it/1200x700" 
-                            alt="Image alt" />                          
-                        <figcaption class="right">
-                            <h4>Slide 7</h4>
-                            <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. </p>
-                            <p>Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in <a href="http://www.example.com">hendrerit in vulputate</a> velit esse molestie consequat.</p>
-                            <p>Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer possim assum. </p>
-                            <p>Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer possim assum. </p>
-                        </figcaption>
-                    </figure>
-                </li>
+                                    </figcaption>
+                                </figure>
+                            </a>
+                        </li>
+                        <li>                
+                        
+                            <figure>
+                                <img 
+                                    src="http://placehold.it/400x200" 
+                                    data-mobile="http://placehold.it/400x200" 
+                                    data-desktop="http://placehold.it/1200x700" 
+                                    alt="Image alt" />                          
+                                <figcaption class="right">
+                                    <h4>Slide 7</h4>
+                                    <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. </p>
+                                    <p>Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in <a href="http://www.example.com">hendrerit in vulputate</a> velit esse molestie consequat.</p>
+                                    <p>Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer possim assum. </p>
+                                    <p>Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer possim assum. </p>
+                                </figcaption>
+                            </figure>
+                        </li>
 
-                <li>
-                    <a href="https://chrisharburg.herokuapp.com/portfolio/engagements/">
-                    <figure>
-                        <img alt="" data-desktop="https://chrisharburg.s3.amazonaws.com/media/CACHE/images/image/wedding-ring-boquet-raleighjpg/2484280126353bbeb4ea59901ea6b1b6.jpg" data-mobile="https://chrisharburg.s3.amazonaws.com/media/CACHE/images/image/wedding-ring-boquet-raleighjpg/49c89366cebf89c6049a0faa14b7eea5.jpg" src="https://chrisharburg.s3.amazonaws.com/media/CACHE/images/image/wedding-ring-boquet-raleighjpg/49c89366cebf89c6049a0faa14b7eea5.jpg">
-                    </figure></a>
-                </li>
+                        <li>
+                            <a href="https://chrisharburg.herokuapp.com/portfolio/engagements/">
+                            <figure>
+                                <img alt="" data-desktop="https://chrisharburg.s3.amazonaws.com/media/CACHE/images/image/wedding-ring-boquet-raleighjpg/2484280126353bbeb4ea59901ea6b1b6.jpg" data-mobile="https://chrisharburg.s3.amazonaws.com/media/CACHE/images/image/wedding-ring-boquet-raleighjpg/49c89366cebf89c6049a0faa14b7eea5.jpg" src="https://chrisharburg.s3.amazonaws.com/media/CACHE/images/image/wedding-ring-boquet-raleighjpg/49c89366cebf89c6049a0faa14b7eea5.jpg">
+                            </figure></a>
+                        </li>
 
-                <li>
-                    <a href="https://chrisharburg.herokuapp.com/portfolio/weddings/">
-                    <figure>
-                        <img alt="" data-desktop="https://chrisharburg.s3.amazonaws.com/media/CACHE/images/image/wedding-cupcake-raleigh-north-carolinajpg/7be8a1bae590c8e647f50a4526a7d040.jpg" data-mobile="https://chrisharburg.s3.amazonaws.com/media/CACHE/images/image/wedding-cupcake-raleigh-north-carolinajpg/58503a621ff6c8f49ade02e154387382.jpg" src="https://chrisharburg.s3.amazonaws.com/media/CACHE/images/image/wedding-cupcake-raleigh-north-carolinajpg/58503a621ff6c8f49ade02e154387382.jpg">
-                    </figure></a>
-                </li>
+                        <li>
+                            <a href="https://chrisharburg.herokuapp.com/portfolio/weddings/">
+                            <figure>
+                                <img alt="" data-desktop="https://chrisharburg.s3.amazonaws.com/media/CACHE/images/image/wedding-cupcake-raleigh-north-carolinajpg/7be8a1bae590c8e647f50a4526a7d040.jpg" data-mobile="https://chrisharburg.s3.amazonaws.com/media/CACHE/images/image/wedding-cupcake-raleigh-north-carolinajpg/58503a621ff6c8f49ade02e154387382.jpg" src="https://chrisharburg.s3.amazonaws.com/media/CACHE/images/image/wedding-cupcake-raleigh-north-carolinajpg/58503a621ff6c8f49ade02e154387382.jpg">
+                            </figure></a>
+                        </li>
 
-                <li>
-                    <a href="https://chrisharburg.herokuapp.com/portfolio/weddings/">
-                    <figure>
-                        <img alt="A bride places a traditional wedding garland on her groom at the Sheraton Raleigh Hotel" data-desktop="https://chrisharburg.s3.amazonaws.com/media/CACHE/images/image/wedding-hilton-raleigh2jpg/280dcd430fe66d92696dc0636f26fff0.jpg" data-mobile="https://chrisharburg.s3.amazonaws.com/media/CACHE/images/image/wedding-hilton-raleigh2jpg/61cd84f6a41e41ac7b63e0c83b0f99ba.jpg" src="https://chrisharburg.s3.amazonaws.com/media/CACHE/images/image/wedding-hilton-raleigh2jpg/61cd84f6a41e41ac7b63e0c83b0f99ba.jpg">
-                    </figure></a>
-                </li>
+                        <li>
+                            <a href="https://chrisharburg.herokuapp.com/portfolio/weddings/">
+                            <figure>
+                                <img alt="A bride places a traditional wedding garland on her groom at the Sheraton Raleigh Hotel" data-desktop="https://chrisharburg.s3.amazonaws.com/media/CACHE/images/image/wedding-hilton-raleigh2jpg/280dcd430fe66d92696dc0636f26fff0.jpg" data-mobile="https://chrisharburg.s3.amazonaws.com/media/CACHE/images/image/wedding-hilton-raleigh2jpg/61cd84f6a41e41ac7b63e0c83b0f99ba.jpg" src="https://chrisharburg.s3.amazonaws.com/media/CACHE/images/image/wedding-hilton-raleigh2jpg/61cd84f6a41e41ac7b63e0c83b0f99ba.jpg">
+                            </figure></a>
+                        </li>
 
-                <li>
-                    <a href="https://chrisharburg.herokuapp.com/portfolio/weddings/">
-                    <figure>
-                        <img alt="" data-desktop="https://chrisharburg.s3.amazonaws.com/media/CACHE/images/image/121jpg/36d4cf3406621250fd833a0d693d8f46.jpg" data-mobile="https://chrisharburg.s3.amazonaws.com/media/CACHE/images/image/121jpg/42275ef32b61cdc8960bef05a525141b.jpg" src="https://chrisharburg.s3.amazonaws.com/media/CACHE/images/image/121jpg/42275ef32b61cdc8960bef05a525141b.jpg">
-                    </figure></a>
-                </li>
+                        <li>
+                            <a href="https://chrisharburg.herokuapp.com/portfolio/weddings/">
+                            <figure>
+                                <img alt="" data-desktop="https://chrisharburg.s3.amazonaws.com/media/CACHE/images/image/121jpg/36d4cf3406621250fd833a0d693d8f46.jpg" data-mobile="https://chrisharburg.s3.amazonaws.com/media/CACHE/images/image/121jpg/42275ef32b61cdc8960bef05a525141b.jpg" src="https://chrisharburg.s3.amazonaws.com/media/CACHE/images/image/121jpg/42275ef32b61cdc8960bef05a525141b.jpg">
+                            </figure></a>
+                        </li>
 
-                <li>
-                    <a href="https://chrisharburg.herokuapp.com/portfolio/events/">
-                    <figure>
-                        <img alt="Family portrait of a newborn" data-desktop="https://chrisharburg.s3.amazonaws.com/media/CACHE/images/image/newborn-baby-family-portrait01jpg/36a12c395ec2498c7f522433a250216e.jpg" data-mobile="https://chrisharburg.s3.amazonaws.com/media/CACHE/images/image/newborn-baby-family-portrait01jpg/871fcd9dbe5adc0b6e495f1b1bd92c4e.jpg" src="https://chrisharburg.s3.amazonaws.com/media/CACHE/images/image/newborn-baby-family-portrait01jpg/871fcd9dbe5adc0b6e495f1b1bd92c4e.jpg">
-                    </figure></a>
-                </li>
+                        <li>
+                            <a href="https://chrisharburg.herokuapp.com/portfolio/events/">
+                            <figure>
+                                <img alt="Family portrait of a newborn" data-desktop="https://chrisharburg.s3.amazonaws.com/media/CACHE/images/image/newborn-baby-family-portrait01jpg/36a12c395ec2498c7f522433a250216e.jpg" data-mobile="https://chrisharburg.s3.amazonaws.com/media/CACHE/images/image/newborn-baby-family-portrait01jpg/871fcd9dbe5adc0b6e495f1b1bd92c4e.jpg" src="https://chrisharburg.s3.amazonaws.com/media/CACHE/images/image/newborn-baby-family-portrait01jpg/871fcd9dbe5adc0b6e495f1b1bd92c4e.jpg">
+                            </figure></a>
+                        </li>
 
-                <li>
-                    <a href="https://chrisharburg.herokuapp.com/portfolio/events/">
-                    <figure>
-                        <img alt="" data-desktop="https://chrisharburg.s3.amazonaws.com/media/CACHE/images/image/new-born-baby-portraitjpg/ea41ce4008753928a27d374503868f6d.jpg" data-mobile="https://chrisharburg.s3.amazonaws.com/media/CACHE/images/image/new-born-baby-portraitjpg/889e07fa71b31a3d624e31a6626549bb.jpg" src="https://chrisharburg.s3.amazonaws.com/media/CACHE/images/image/new-born-baby-portraitjpg/889e07fa71b31a3d624e31a6626549bb.jpg">
-                    </figure></a>
-                </li>
+                        <li>
+                            <a href="https://chrisharburg.herokuapp.com/portfolio/events/">
+                            <figure>
+                                <img alt="" data-desktop="https://chrisharburg.s3.amazonaws.com/media/CACHE/images/image/new-born-baby-portraitjpg/ea41ce4008753928a27d374503868f6d.jpg" data-mobile="https://chrisharburg.s3.amazonaws.com/media/CACHE/images/image/new-born-baby-portraitjpg/889e07fa71b31a3d624e31a6626549bb.jpg" src="https://chrisharburg.s3.amazonaws.com/media/CACHE/images/image/new-born-baby-portraitjpg/889e07fa71b31a3d624e31a6626549bb.jpg">
+                            </figure></a>
+                        </li>
 
-                <li>
-                    <a href="https://chrisharburg.herokuapp.com/portfolio/engagements/">
-                    <figure>
-                        <img alt="An engaged couple hug in Raleigh, NC" data-desktop="https://chrisharburg.s3.amazonaws.com/media/CACHE/images/image/engagement-blanket-virginia2jpg/0e6b63ed5afe2be5834c2aec0504c33d.jpg" data-mobile="https://chrisharburg.s3.amazonaws.com/media/CACHE/images/image/engagement-blanket-virginia2jpg/38e18ec8196c1b021bae8afe6b962a2d.jpg" src="https://chrisharburg.s3.amazonaws.com/media/CACHE/images/image/engagement-blanket-virginia2jpg/38e18ec8196c1b021bae8afe6b962a2d.jpg">
-                    </figure></a>
-                </li>
+                        <li>
+                            <a href="https://chrisharburg.herokuapp.com/portfolio/engagements/">
+                            <figure>
+                                <img alt="An engaged couple hug in Raleigh, NC" data-desktop="https://chrisharburg.s3.amazonaws.com/media/CACHE/images/image/engagement-blanket-virginia2jpg/0e6b63ed5afe2be5834c2aec0504c33d.jpg" data-mobile="https://chrisharburg.s3.amazonaws.com/media/CACHE/images/image/engagement-blanket-virginia2jpg/38e18ec8196c1b021bae8afe6b962a2d.jpg" src="https://chrisharburg.s3.amazonaws.com/media/CACHE/images/image/engagement-blanket-virginia2jpg/38e18ec8196c1b021bae8afe6b962a2d.jpg">
+                            </figure></a>
+                        </li>
 
-                <li>
-                    <a href="https://chrisharburg.herokuapp.com/portfolio/engagements/">
-                    <figure>
-                        <img alt="An engaged couple watches a sunset at Pullen Park in Raleigh, NC" data-desktop="https://chrisharburg.s3.amazonaws.com/media/CACHE/images/image/engagement-lake-sunset-pullen-park-raleigh-nc2jpg/927f87034d086055459aa6aa4d87fa6a.jpg" data-mobile="https://chrisharburg.s3.amazonaws.com/media/CACHE/images/image/engagement-lake-sunset-pullen-park-raleigh-nc2jpg/9dcdc94e8ce744670d3baa31b2561bec.jpg" src="https://chrisharburg.s3.amazonaws.com/media/CACHE/images/image/engagement-lake-sunset-pullen-park-raleigh-nc2jpg/9dcdc94e8ce744670d3baa31b2561bec.jpg">
-                    </figure></a>
-                </li>
+                        <li>
+                            <a href="https://chrisharburg.herokuapp.com/portfolio/engagements/">
+                            <figure>
+                                <img alt="An engaged couple watches a sunset at Pullen Park in Raleigh, NC" data-desktop="https://chrisharburg.s3.amazonaws.com/media/CACHE/images/image/engagement-lake-sunset-pullen-park-raleigh-nc2jpg/927f87034d086055459aa6aa4d87fa6a.jpg" data-mobile="https://chrisharburg.s3.amazonaws.com/media/CACHE/images/image/engagement-lake-sunset-pullen-park-raleigh-nc2jpg/9dcdc94e8ce744670d3baa31b2561bec.jpg" src="https://chrisharburg.s3.amazonaws.com/media/CACHE/images/image/engagement-lake-sunset-pullen-park-raleigh-nc2jpg/9dcdc94e8ce744670d3baa31b2561bec.jpg">
+                            </figure></a>
+                        </li>
 
-            </ul>            
+                    </ul>            
+                </div>
+            </div>
         </div>
 
 
@@ -209,9 +232,17 @@
         <script>
         $('.ribbon-carousel').ribbonCarousel({
             'autoPlay':false,
+            'autoPlayInterval':7000,
+            'animationDuration':500,
+            'maxAutoPlayIntervals':1,
             'useAnchors':true,
-            'aspectRatio':2,
-            'maxAutoPlayIntervals':0
+            'pageAnchorPrefix':'slide-',
+            'themeClass':'ribbon-carousel-theme-default',
+            'slideWidth':null,
+            'slideHeight':null,
+            'aspectRatio':1.6,
+            'minimumLoad':1,
+            'bufferSides':2
         });
         </script>
 
