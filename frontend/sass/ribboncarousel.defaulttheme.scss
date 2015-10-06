@@ -1,48 +1,214 @@
 @import "compass";
-
-$mobile_break: 768px;
-@mixin micro-clearfix(){
-  &:before,
-  &:after {
-      content: " "; /* 1 */
-      display: table; /* 2 */
-  }
-
-  &:after {
-      clear: both;
-  }
-}
-
-.ribbon-carousel.ribbon-carousel-theme-default {
-
-    margin:2em 0;
-
-    font-family: Century Gothic,CenturyGothic,AppleGothic,sans-serif; 
-    color: #222;
-  
-
-  .slide-container-inner{
-
-    background-image: url(http://subtlepatterns2015.subtlepatterns.netdna-cdn.com/patterns/fabric_of_squares_gray.png);
-
-    border-top:         6px solid #eee;
-    border-bottom:      6px solid #eee;
-    -webkit-box-shadow: 0px 0px 10px 0px rgba(50, 50, 50, 0.25);
-    -moz-box-shadow:    0px 0px 10px 0px rgba(50, 50, 50, 0.25);
-    box-shadow:         0px 0px 10px 0px rgba(50, 50, 50, 0.25);
-
-    figure{
-
-      img{
-      }
-      figcaption{
-        position:absolute;
-        padding:0.5em;
-        bottom:0px;
-        width:100%;
-        background:rgba(255, 255, 255, 0.75);
-      }
+$mobile_break:768px;
+$color-white:#ffffff;
+$color-almost-white:#f5f5f5;
+$color-gray:#222;
+$color-gray-light:#999;
+$color-gray-lighter:#ddd;
+$loading_height: 350px;
+@mixin micro-clearfix() {
+    &:before,&:after {
+        content:" ";
+        /* 1 */
+        display:table;
+        /* 2 */
     }
-  }
+    &:after {
+        clear: both;
+    }
+}
+/* ANIMATIONS */
+@keyframes barberpole {
+    from {
+        background-position:0 0;
+    }
+    to {
+        background-position:40px 20px;
+    }
+}
+@-webkit-keyframes barberpole {
+    from {
+        background-position:0 0;
+    }
+    to {
+        background-position:40px 20px;
+    }
+}
+@-moz-keyframes barberpole {
+    from {
+        background-position:0 0;
+    }
+    to {
+        background-position:40px 20px;
+    }
+}
+@-webkit-keyframes fadeInFromNone {
+    0% {
+        display:none;
+        opacity:0;
+    }
+    1% {
+        display:block;
+        opacity:0;
+    }
+    100% {
+        display:block;
+        opacity:1;
+    }
+}
+@-webkit-keyframes fadeOutToNone {
+    100% {
+        display:none;
+        opacity:0;
+    }
+    1% {
+        display:block;
+        opacity:0;
+    }
+    0% {
+        display:block;
+        opacity:1;
+    }
+}
+@mixin container-style() {
+    background-image:url(http://subtlepatterns2015.subtlepatterns.netdna-cdn.com/patterns/fabric_of_squares_gray.png);
+    -webkit-box-shadow:0px 0px 10px 0px rgba(50,50,50,0.25);
+    -moz-box-shadow:0px 0px 10px 0px rgba(50,50,50,0.25);
+    box-shadow:0px 0px 10px 0px rgba(50,50,50,0.25);
+}
+@mixin scrim() {
+    background:rgba(255,255,255,0.75);
+}
+@mixin striped-background() {
+    background-size:20px 20px;
+    background-image:linear-gradient( 45deg,$color-almost-white 25%,transparent 25%,transparent 50%,$color-almost-white 50%,$color-almost-white 75%,transparent 75%,transparent );
+    -webkit-animation:barberpole 0.5s linear infinite;
+    -moz-animation:barberpole 0.5s linear infinite;
+    animation:barberpole 0.5s linear infinite;
+}
+.ribbon-carousel.ribbon-carousel-theme-default {
+    margin:2em 0;
+    font-family:Century Gothic,CenturyGothic,AppleGothic,sans-serif;
+    color:$color-gray;
+    
+    .slide-container-inner {
+        /*@include opacity(0);
+        @include transition(opacity,400ms,ease-out);*/
+        @include container-style();
+        figure {
+            img {
+            }
+            figcaption {
+                position:absolute;
+                padding:0.5em;
+                bottom:0px;
+                width:100%;
+                @include scrim();
+            }
+        }
+    }
+    &.unloaded, &.loading:not(.sufficiently-loaded) {
+        min-height:$loading_height;
+        @include container-style();
+        @include striped-background();
+        
+        position:absolute;
+        left:0;
+        width:100%;
 
+        &>ul {
+            display: none;
+        }
+
+        .ui {
+            display:none;
+        }
+        
+    }
+    &.sufficiently-loaded, &.loaded {
+        /*.slide-container-inner {
+            @include opacity(1);
+        }*/
+    }
+    .ui {
+        position:absolute;
+        z-index:2;
+        height:100%;
+        width:100%;
+        top:100%;
+        a {
+            color:$color-gray;
+            text-decoration:none;
+            &:hover {
+                color:$color-gray-light;
+            }
+            &:active,&.active {
+                color:$color-gray-lighter;
+            }
+        }
+        .arrows {
+            position:relative;
+            top:-50%;
+            a {
+                font-size:2em;
+                @include scrim();
+                span {
+                    display:none;
+                }
+                &:hover,&.active {
+                    background:rgba(140,140,140,0.4);
+                    color:#fff;
+                }
+                &:active {
+                    background:rgba(40,40,40,0.4);
+                    color:#fff;
+                }
+            }
+            .next {
+                position:absolute;
+                right:0;
+                top:-30px;
+                padding:10px 0 10px 0.75em;
+                &:before {
+                    content:"\232A";
+                }
+            }
+            .previous {
+                position:absolute;
+                top:-30px;
+                padding:10px 0.75em 10px 0;
+                &:before {
+                    content:"\2329";
+                }
+            }
+        }
+        .autoplay {
+            position:absolute;
+            top:0;
+            right:0;
+            width:20%;
+            text-align:right;
+            a {
+                padding:0.5em 1em;
+                position:relative;
+                top:0.5em;
+            }
+        }
+        .pagination {
+            position:absolute;
+            left:0;
+            top:0;
+            width:80%;
+            a {
+                font-size:2em;
+                padding:0 3px;
+                span {
+                    display:none;
+                }
+                &:before {
+                    content: "\2022";
+                }
+            }
+        }
+    }
 }
