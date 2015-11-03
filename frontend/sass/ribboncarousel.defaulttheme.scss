@@ -108,12 +108,9 @@ $loading_height: 350px;
         }
     }
     &.unloaded, &.loading:not(.sufficiently-loaded) {
-        min-height:$loading_height;
-        @include container-style();
-        @include striped-background();
         
-        position:absolute;
-        left:0;
+    
+        position:relative;
         width:100%;
 
         &>ul {
@@ -123,7 +120,13 @@ $loading_height: 350px;
         .ui {
             display:none;
         }
-        
+        .slide-container-inner {
+            @include container-style();
+            @include striped-background();
+            position: absolute;
+            width:100%;
+            height:100%;
+        }
     }
     &.sufficiently-loaded, &.loaded {
         /*.slide-container-inner {

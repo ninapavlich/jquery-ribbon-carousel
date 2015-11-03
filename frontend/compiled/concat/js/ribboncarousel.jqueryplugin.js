@@ -32,8 +32,7 @@
         this.element = element;
 
         $(this.element).data('ribbonCarousel', this);
-        window['carousel'] = this;
-
+        
         this.options = $.extend( {}, defaults, options) ;
         this.mobile_break = this.options.mobileBreak;
         this.average_aspect_ratio = null;
@@ -97,6 +96,7 @@
                 $(this.element).removeClass(this.options.initialUnloadedClass);
                 $(this.element).trigger('loading');
                 $(this.element).addClass(this.options.themeClass);
+                
                 if(this.options.useAnchors==true){
                     this.current_index = this.starting_loading_index = this.getIndexFromHash(window.location.hash);
                 }else{
@@ -109,6 +109,7 @@
             
             if(this.containers_inited==false){
                 this.initContainers();
+                this.resizeLoadingContainer();
                 return;
             }
 
@@ -218,7 +219,12 @@
 
             $(window).bind("resize", function(event){
                 parent.calculateDimensions();
-                parent.renderSlides();
+                parent.resizeLoadingContainer();
+
+                if(parent.sufficiently_loaded==true){
+                    parent.renderSlides();
+                }
+                
             })
 
             $(window).bind('hashchange', function(event) {
@@ -343,13 +349,26 @@
         getPreviousSlideIndex: function(){
             return this.sanitizeSlideIndex(this.current_index - 1);
         },
+        resizeLoadingContainer: function(){
+            if(this.sufficiently_loaded){
+                $(this.element).css("min-height", 0);
 
+            }else{
+                $(this.element).css("min-height", this.slide_height);
+                var ww = $(window).width();
+                var dx = (ww - this.slide_width)/2;
+                $(this.slide_container).css("width", $(window).width());
+                $(this.slide_container).css("left", 0-dx);
+            }
+        },
         renderSlides: function(force){
             var parent = this;
 
             if(typeof(force)==undefined){
                 force = false;
             }
+
+
 
             if(this.rendering){
                 this.request_rerender = true;
