@@ -2,6 +2,10 @@
 
 [View a simple demo here](https://cdn.rawgit.com/ninapavlich/jquery-ribbon-carousel/master/example.html)
 
+[View the carousel in the wild here](http://www.chrisharburg.com/)
+
+
+
 ![alt text](https://raw.githubusercontent.com/ninapavlich/jquery-ribbon-carousel/master/docs/screenshot.png "Very Simple Screenshot")
 
 ## Initialization
