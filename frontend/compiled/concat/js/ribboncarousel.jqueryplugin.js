@@ -20,7 +20,6 @@
             slideHeight:null,
             aspectRatio:1.8,
             minimumLoad:1,
-            bufferSides:2,
             initKeyboardEvents:true,
             initDraggingEvents:true,
             initUI:true
@@ -50,6 +49,7 @@
         this.starting_loading_index = null;
         this.current_index = null;
         this.previous_rendered_index = null;
+        this.previous_rendered_queue = null;
 
         this.initial_values_inited = false;
         this.containers_inited = false;
@@ -385,47 +385,76 @@
             
 
             // console.log("renderSlides: "+this.previous_rendered_index+" to "+this.current_index)
-            var previousIndexQueue = this.getIndexQueue( this.previous_rendered_index );
+            var previousIndexQueue = this.previous_rendered_queue == null? this.getIndexQueue( this.previous_rendered_index ) : this.previous_rendered_queue;
             var indexQueue = this.getIndexQueue( this.current_index);
+            var dx = this.previous_rendered_index - this.current_index;
             
-            var addIndexes = this.getIndexesToAdd(previousIndexQueue, indexQueue);
-            var removeIndexes = this.getIndexesToRemove(previousIndexQueue, indexQueue);
-            var insertBefore = this.isBefore(this.current_index, this.previous_rendered_index);
+            
 
-            // console.log("addIndexes: "+addIndexes+" removeIndexes: "+removeIndexes+" insertBefore: "+insertBefore)
+            var insertBefore = this.isBefore(this.current_index, this.previous_rendered_index);
+            var flipped = this.isFlipped(insertBefore, dx);
+            var same = indexQueue.equals(previousIndexQueue);
+            // console.log("Queue for "+this.current_index+" is "+indexQueue+" (previous was "+previousIndexQueue+") dx:"+dx+" insertBefore: "+insertBefore+" flipped: "+flipped+" same?? "+same)
+            var addSlideIndexes = same? [] : this.getSlideIndexesToAdd(previousIndexQueue, indexQueue, dx, flipped);
+            var removeIndexes = same? [] : this.getIndexesToRemove(previousIndexQueue, indexQueue, dx, flipped, insertBefore);
+            
+
+            // console.log("addSlideIndexes: "+addSlideIndexes+" removeIndexes: "+removeIndexes+" insertBefore: "+insertBefore)
             if(insertBefore){
-                addIndexes.reverse();
+                addSlideIndexes.reverse();
             }
             
             //calculate new x positions for animation
             if(insertBefore){
-                var starting_left = 0 - (this.options.bufferSides * this.slide_width) - (this.slide_width * removeIndexes.length)
+                var starting_left = 0 - (this.buffer_sides * this.slide_width) - (this.slide_width * removeIndexes.length)
             }else{
-                var starting_left = 0 - (this.options.bufferSides * this.slide_width) //- (slide_width * addIndexes.length);
+                var starting_left = 0 - (this.buffer_sides * this.slide_width) //- (slide_width * addSlideIndexes.length);
             }
             starting_left = starting_left - this.drag_offset;
 
             if(insertBefore){
-                var target_left = 0-(this.options.bufferSides * this.slide_width);
+                var target_left = 0-(this.buffer_sides * this.slide_width);
             }else{
-                var target_left = 0-(this.options.bufferSides * this.slide_width) - (this.slide_width * removeIndexes.length)
+                var target_left = 0-(this.buffer_sides * this.slide_width) - (this.slide_width * removeIndexes.length)
             }
-
 
 
             //Add new slides to beginning or end of container
-            for(var k=0; k<addIndexes.length; k++){
-                var slide = this.all_images_index_hash[addIndexes[k]];
-                var slide_html = this.createSlide(slide);
-
-                if(insertBefore){
+            var added_buffer = this.buffer_sides_change < 0;
+            if(added_buffer){
+                
+                //insert before
+                for(var k=0; k<addSlideIndexes.length/2; k++){
+                    var slide_index = addSlideIndexes[k];
+                    var slide = this.all_images_index_hash[slide_index];
+                    var slide_html = this.createSlide(slide);
                     $(this.slide_container).prepend(slide_html);    
-                }else{
-                    $(this.slide_container).append(slide_html);
                 }
 
-                
+                //insert after
+                for(var k=addSlideIndexes.length/2; k<addSlideIndexes.length; k++){
+                    var slide_index = addSlideIndexes[k];
+                    var slide = this.all_images_index_hash[slide_index];
+                    var slide_html = this.createSlide(slide);
+                    $(this.slide_container).append(slide_html);    
+                }
+
+
+            }else{
+                for(var k=0; k<addSlideIndexes.length; k++){
+                    var slide_index = addSlideIndexes[k];
+                    var slide = this.all_images_index_hash[slide_index];
+                    var slide_html = this.createSlide(slide);
+
+                    // console.log("insert at "+k+" which is "+slide_index+" "+slide_html)
+                    if(insertBefore){
+                        $(this.slide_container).prepend(slide_html);    
+                    }else{
+                        $(this.slide_container).append(slide_html);
+                    }
+                }
             }
+            
 
             $(this.slide_container).css("left", starting_left);
 
@@ -452,19 +481,42 @@
             var parent = this;
             var previousIndexQueue = this.getIndexQueue( this.previous_rendered_index );
             var indexQueue = this.getIndexQueue( this.current_index);
+            var insertBefore = this.isBefore(this.current_index, this.previous_rendered_index);
+            var dx = this.previous_rendered_index - this.current_index;
+            var flipped = this.isFlipped(insertBefore, dx);
+            var use_dx = dx;//flipped? dx < 0? -1 : dx  : dx < 0? dx : 0;
 
-            //Remove old image containers
-            var removeIndexes = this.getIndexesToRemove(previousIndexQueue, indexQueue);
+            var currentActualQueue = [];
             $(this.slide_container).children().each(function(index, item){
                 var item_index = parseInt($(item).attr('data-index'));
-                var remove_item = removeIndexes.indexOf(item_index)>=0;
+                currentActualQueue.push(item_index);
+            });
+            // console.log("Actual queue is "+currentActualQueue+" shooting for "+indexQueue+"")
+
+            //Remove old image containers
+            var removeIndexes = this.getIndexesToRemove(currentActualQueue, indexQueue, use_dx, flipped, insertBefore);
+            // console.log("slide container now has "+$(this.slide_container).children().length+" children, need to remove indexes at "+removeIndexes+" dx: "+dx+" use_dx: "+use_dx)
+            
+            
+
+            $(this.slide_container).children().each(function(index, item){
+                var slide_index = parseInt($(item).attr('data-index'));
+                var remove_item = removeIndexes.indexOf(index)>=0;
                 if(remove_item){
                     parent.destroySlide(item);                    
                 }
             });
 
+            var afterQueue = [];
+            $(this.slide_container).children().each(function(index, item){
+                var item_index = parseInt($(item).attr('data-index'));
+                afterQueue.push(item_index);
+            });
+            this.previous_rendered_queue = afterQueue;
+            // console.log("AFTER queue is "+afterQueue)
 
-            var ending_target_left = 0-(this.options.bufferSides * this.slide_width);
+
+            var ending_target_left = 0-(this.buffer_sides * this.slide_width);
             $(this.slide_container).css("left", ending_target_left);
 
             this.previous_rendered_index = this.current_index;
@@ -500,7 +552,8 @@
         
             var slide_aspect_ratio = this.getAspectRatio();
             $(this.element).css("height", this.slide_height);
-            $(this.slide_container).css("width", this.slide_width * this.all_images.length);
+            var total_slides = $(this.slide_container).children().length;
+            $(this.slide_container).css("width", this.slide_width * total_slides);
             
             //TODO -- improve logic here
             $(this.slide_container).children().each(function(index, item){
@@ -545,7 +598,7 @@
             var dist = this.current_index - this.previous_rendered_index;
             if( dist <= 0-half_length){
                 dist = (this.current_index+l) - this.previous_rendered_index;
-            }else if(dist >= half_length){
+            }else if(dist > half_length){
                 dist = this.current_index - (this.previous_rendered_index+l);
             }
             
@@ -555,24 +608,179 @@
                 return false;
             }
         },
-        getIndexesToRemove: function(previous_queue, current_queue){
-            var changelist = [];
-            for(var k=0; k<previous_queue.length; k++){
-                var index = previous_queue[k];
-                if(current_queue.indexOf(index)<0){
-                    changelist.push(index);
-                }
+        isFlipped: function(before, dx){
+            
+            if(dx==0){
+                return false;
             }
+            if(before==false && dx < 0){
+                return false;
+            } else if(before==true && dx >= 0){
+                return false;
+            }else{
+                return true;
+            }
+        },
+        
+        getIndexesToRemove: function(previous_queue, current_queue, dx, flipped, insertBefore){
+            var changelist = [];
+
+
+            if(current_queue.equals(previous_queue)){
+                return []
+            }
+
+            var lx = current_queue.length - previous_queue.length;
+            // console.log("LX: "+lx)
+            
+            // if(flipped){
+            //     var flipped_dx = dx - this.all_images.length;
+            //     console.log("dx = "+dx+" flipped_dx: "+flipped_dx)
+            //     if(flipped_dx < 0){
+            //         //remove the first X from the beginning
+            //         changelist = previous_queue.slice(0, 0-flipped_dx);
+            //     }else if(flipped_dx > 0){
+            //         //remove the last X from the end
+            //         changelist = previous_queue.slice(0-flipped_dx);
+            //     }
+            // }else{
+            //     if(dx < 0){
+            //         //remove the first X from the beginning
+            //         changelist = previous_queue.slice(0, 0-dx);
+
+            //     }else if(dx > 0){
+            //         //remove the last X from the end
+            //         changelist = previous_queue.slice(0-dx);
+            //     }
+            // }
+            // console.log("REMOVE SUBSET: "+changelist)
+
+
+            for(var k=0; k<previous_queue.length; k++){
+                var index = current_queue[k];
+                var item = previous_queue[k];
+
+
+                var new_index;
+                if(flipped){
+                    var flipped_dx = dx < 0? dx + this.all_images.length: dx - this.all_images.length;
+                    // console.log("dx: "+dx+" flipped_dx: "+flipped_dx)
+                    if(flipped_dx < 0){
+                        new_index = k + flipped_dx;
+                    }else{
+                        new_index = k + flipped_dx + lx;
+                    }
+                }else{
+                    if(dx < 0){
+                        new_index = k + dx;
+                    }else if(dx > 0) {
+                        new_index = k + dx + lx;
+                    }else{
+                        if(lx > 0 && this.buffer_sides_change < 0){
+                            //added a buffer
+                            new_index = k + lx/2;
+                            // console.log("added a buffer, nex index is "+k+" to "+new_index)
+                            
+                        }else if(lx < 0 && this.buffer_sides_change > 0){
+                            //removed a buffer
+                            new_index = k + lx/2;
+                            // console.log("removed a buffer, nex index is "+k+" to "+new_index)
+
+                        }else if(lx > 0){
+                            new_index = k;        
+                        }
+                    }
+                }
+
+
+                 // = flipped? insertBefore? k + dx: k - dx : insertBefore? k - dx + 1: k + dx;
+                // flipped? dx < 0? k - dx - 1 : dx <= 1? k - dx : k - dx + 1: k + dx;
+                var new_item = new_index >=0 && new_index < current_queue.length? current_queue[new_index] : null; 
+                // console.log("REMOVE: Does the old item "+item+" that was at index "+k+" exist in the new queue at index "+new_index+"? "+(item == new_item)+" insertBefore? "+insertBefore)
+                
+                if(item !== new_item){
+                    changelist.push(k);
+                }
+                // var index = current_queue[k];
+                // if(current_queue.indexOf(index)<0){
+                //     changelist.push(index);
+                // }
+            }
+            // console.log("REMOVE SUBSET: "+changelist)
             return changelist;
         },
-        getIndexesToAdd: function(previous_queue, current_queue){
+        
+
+
+        getSlideIndexesToAdd: function(previous_queue, current_queue, dx, flipped){
+            
+            
             var changelist = [];
-            for(var k=0; k<current_queue.length; k++){
-                var index = current_queue[k];
-                if(previous_queue.indexOf(index)<0){
-                    changelist.push(index);
+            if(current_queue.equals(previous_queue)){
+                return []
+            }
+
+            var lx = current_queue.length - previous_queue.length;
+            
+            if(flipped){
+                var flipped_dx = dx < 0? dx + this.all_images.length: dx - this.all_images.length;
+                if(flipped_dx < 0){
+                    //add last X to the end
+                    changelist = current_queue.slice(flipped_dx-lx);
+                }else{
+                    //add first X to the beginning
+                    changelist = current_queue.slice(0, flipped_dx+lx); //lx for the beginning
+                }
+            }else{
+                if(dx < 0){
+                    //add last X to the end
+                    changelist = current_queue.slice(dx-lx);
+                }else if (dx > 0){
+                    //add first X to the beginning
+                    changelist = current_queue.slice(0, dx+lx); //lx for the beginning
+                }else{
+                    if(lx > 0 && this.buffer_sides_change < 0){
+                        // console.log("we added a buffer!")
+                        //add first X to the beginning
+                        changelist = current_queue.slice(0, lx/2).concat( current_queue.slice( 0 - (lx/2) ) )  
+                        
+                    }else if(lx < 0 && this.buffer_sides_change > 0){
+                        // console.log("we removed a buffer!")
+                        changelist = [];
+
+                    }else if(lx > 0){
+                        //add first X to the beginning
+                        changelist = current_queue.slice(0, lx); //lx for the beginning        
+                    }
+                    
+
                 }
             }
+            // console.log("ADD SUBSET: "+changelist)
+            // for(var k=0; k<current_queue.length; k++){
+            //     var index = current_queue[k];
+            //     var new_item = current_queue[k];
+            //     var previous_index = k-dx//flipped? (dx < 0? k + dx + 1 : dx <= 1? k + dx : k + dx - 1)  : k - dx;
+            //     //hack:
+            //     //Need to refactor....
+            //     // dx < 0 k + dx + 1
+            //     // dx = 1,0 k + dx
+            //     // dx > 1 k + dx - 1
+            //     // k - dx
+
+            //     var previous_item = previous_index >=0 && previous_index < previous_queue.length? previous_queue[previous_index] : null; 
+            //     console.log("ADD: Does the new item "+new_item+" that is at index "+k+" exist in the old queue at index "+previous_index+"? "+(previous_item == new_item))
+                
+            //     if(previous_item !== new_item){
+            //         changelist.push(index);
+            //     }
+
+            //     // var index = current_queue[k];
+            //     // if(previous_queue.indexOf(index)<0){
+            //     //     changelist.push(index);
+            //     // }
+            // }
+            // return changelist;
             return changelist;
         },
         getIndexQueue: function(current_index){
@@ -585,16 +793,16 @@
             var first_index = current_index;
             var l = this.all_images.length;
 
-            for(var k=this.options.bufferSides-1; k>=0; k--){
-                var last_index = ((l-1-k) + first_index) % l;
+            for(var k=this.buffer_sides-1; k>=0; k--){
+                var last_index = this.sanitizeSlideIndex( ((l-1-k) + first_index) % l );
                 indexQueue.push(last_index);
                 // console.log("k: "+k+" last: "+last_index)
             }
 
             indexQueue.push(first_index%l);
 
-            for(var k=0; k<this.options.bufferSides; k++){
-                var next_index = (first_index + k + 1) % l;
+            for(var k=0; k<this.buffer_sides; k++){
+                var next_index = this.sanitizeSlideIndex( (first_index + k + 1) % l );
                 indexQueue.push(next_index);
             }
 
@@ -633,6 +841,9 @@
                 return this.average_aspect_ratio;
             }
         },
+        getBufferSides: function(){
+            return Math.ceil($(window).width() / this.slide_width);
+        },
         calculateDimensions: function(){
             if(this.options.slideWidth && this.options.slideHeight){
                 this.slide_width = this.options.slideWidth;
@@ -658,6 +869,12 @@
             }else{
                 // console.log("WARNING: Neither slide width, slide height or aspect ratio are defined. Two of these should be defined.")
             }
+
+            
+            var bs = this.getBufferSides();;
+            this.buffer_sides_change = this.buffer_sides - bs;
+            this.buffer_sides = bs
+            // console.log("buffer = "+this.buffer_sides+" buffer_sides_change: "+this.buffer_sides_change)
             // console.log("Size: "+this.slide_width+" x "+this.slide_height+" ratio: "+this.aspect_ratio)
         },
         calculateAverageAspectRatio:function(){
@@ -792,11 +1009,12 @@
             var target_index = this.current_index;
 
             this.stop_drag_position = parseInt($(this.slide_container).css("left"));
+            var drag_magnitude = Math.ceil(Math.abs(this.start_drag_position - this.stop_drag_position) / this.slide_width);
             
             if(this.drag_direction > 0){
-                target_index = this.getNextSlideIndex();
+                target_index = this.sanitizeSlideIndex(this.current_index + drag_magnitude);
             }else{
-                target_index = this.getPreviousSlideIndex();
+                target_index = this.sanitizeSlideIndex(this.current_index - drag_magnitude);
             }
             this.setSlideIndex(target_index, 'onDragStop');
 
@@ -895,3 +1113,35 @@ SlideImage.prototype.load_error = function () {
     this.loading_error = true;
     $(this).trigger(SlideImage.EVENT_LOAD_ERROR);
 };
+
+/* Array Equality Shim */
+
+// Warn if overriding existing method
+if(Array.prototype.equals)
+    console.warn("Overriding existing Array.prototype.equals. Possible causes: New API defines the method, there's a framework conflict or you've got double inclusions in your code.");
+// attach the .equals method to Array's prototype to call it on any array
+Array.prototype.equals = function (array) {
+    // if the other array is a falsy value, return
+    if (!array)
+        return false;
+
+    // compare lengths - can save a lot of time 
+    if (this.length != array.length)
+        return false;
+
+    for (var i = 0, l=this.length; i < l; i++) {
+        // Check if we have nested arrays
+        if (this[i] instanceof Array && array[i] instanceof Array) {
+            // recurse into the nested arrays
+            if (!this[i].equals(array[i]))
+                return false;       
+        }           
+        else if (this[i] != array[i]) { 
+            // Warning - two different object instances will never be equal: {x:20} != {x:20}
+            return false;   
+        }           
+    }       
+    return true;
+}
+// Hide method from for-in loops
+Object.defineProperty(Array.prototype, "equals", {enumerable: false});
