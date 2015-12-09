@@ -222,7 +222,7 @@
                 parent.resizeLoadingContainer();
 
                 if(parent.sufficiently_loaded==true){
-                    parent.renderSlides();
+                    parent.renderSlides(false, 0);
                 }
                 
             })
@@ -361,11 +361,14 @@
                 $(this.slide_container).css("left", 0-dx);
             }
         },
-        renderSlides: function(force){
+        renderSlides: function(force, duration){
             var parent = this;
 
             if(typeof(force)==undefined){
                 force = false;
+            }
+            if(typeof(duration)==undefined){
+                duration = this.options.animationDuration;
             }
 
 
@@ -375,35 +378,80 @@
                 return;
             }
 
-            if(this.previous_rendered_index == this.current_index && force==false){              
-                this.resizeContainers();
-                return;
+            var render_new_index = (this.previous_rendered_index != this.current_index) || force == true || this.buffer_sides_change!= 0;
+            // console.log("render_new_index: "+render_new_index+" buffer_sides_change: "+this.buffer_sides_change)
+            if(render_new_index){
+                
+                this.request_rerender = false;
+                this.rendering = true;
+                
+
+                // console.log("renderSlides: "+this.previous_rendered_index+" to "+this.current_index)
+                var previousIndexQueue = this.previous_rendered_queue == null? this.getIndexQueue( this.previous_rendered_index ) : this.previous_rendered_queue;
+                var indexQueue = this.getIndexQueue( this.current_index);
+                var dx = this.previous_rendered_index - this.current_index;
+                
+                
+
+                var insertBefore = this.isBefore(this.current_index, this.previous_rendered_index);
+                var flipped = this.isFlipped(insertBefore, dx);
+                var same = indexQueue.equals(previousIndexQueue);
+                // console.log("Queue for "+this.current_index+" is "+indexQueue+" (previous was "+previousIndexQueue+") ");//dx:"+dx+" insertBefore: "+insertBefore+" flipped: "+flipped+" same?? "+same)
+                var addSlideIndexes = same? [] : this.getSlideIndexesToAdd(previousIndexQueue, indexQueue, dx, flipped);
+                var removeIndexes = same? [] : this.getIndexesToRemove(previousIndexQueue, indexQueue, dx, flipped, insertBefore);
+                
+
+                // console.log("addSlideIndexes: "+addSlideIndexes+" removeIndexes: "+removeIndexes+" insertBefore: "+insertBefore)
+                if(insertBefore){
+                    addSlideIndexes.reverse();
+                }
+                
+                
+
+
+                //Add new slides to beginning or end of container
+                var added_buffer = this.buffer_sides_change < 0;
+                if(added_buffer){
+                    
+                    //insert before
+                    for(var k=(addSlideIndexes.length/2)-1; k>=0; k--){
+                        var slide_index = addSlideIndexes[k];
+                        // console.log('insert before '+k+" = "+slide_index)
+                        var slide = this.all_images_index_hash[slide_index];
+                        var slide_html = this.createSlide(slide);
+                        $(this.slide_container).prepend(slide_html);    
+                    }
+
+                    //insert after
+                    for(var k=addSlideIndexes.length/2; k<addSlideIndexes.length; k++){
+                        var slide_index = addSlideIndexes[k];
+                        // console.log('insert after '+k+" = "+slide_index)
+                        var slide = this.all_images_index_hash[slide_index];
+                        var slide_html = this.createSlide(slide);
+                        $(this.slide_container).append(slide_html);    
+                    }
+
+
+                }else{
+                    for(var k=0; k<addSlideIndexes.length; k++){
+                        var slide_index = addSlideIndexes[k];
+                        var slide = this.all_images_index_hash[slide_index];
+                        var slide_html = this.createSlide(slide);
+
+                        // console.log("insert at "+k+" which is "+slide_index+" "+slide_html)
+                        if(insertBefore){
+                            $(this.slide_container).prepend(slide_html);    
+                        }else{
+                            $(this.slide_container).append(slide_html);
+                        }
+                    }
+                }
+            
+            }else{
+                var insertBefore = false;
+                var removeIndexes = [];
             }
-            
-            this.request_rerender = false;
-            this.rendering = true;
-            
 
-            // console.log("renderSlides: "+this.previous_rendered_index+" to "+this.current_index)
-            var previousIndexQueue = this.previous_rendered_queue == null? this.getIndexQueue( this.previous_rendered_index ) : this.previous_rendered_queue;
-            var indexQueue = this.getIndexQueue( this.current_index);
-            var dx = this.previous_rendered_index - this.current_index;
-            
-            
-
-            var insertBefore = this.isBefore(this.current_index, this.previous_rendered_index);
-            var flipped = this.isFlipped(insertBefore, dx);
-            var same = indexQueue.equals(previousIndexQueue);
-            // console.log("Queue for "+this.current_index+" is "+indexQueue+" (previous was "+previousIndexQueue+") dx:"+dx+" insertBefore: "+insertBefore+" flipped: "+flipped+" same?? "+same)
-            var addSlideIndexes = same? [] : this.getSlideIndexesToAdd(previousIndexQueue, indexQueue, dx, flipped);
-            var removeIndexes = same? [] : this.getIndexesToRemove(previousIndexQueue, indexQueue, dx, flipped, insertBefore);
-            
-
-            // console.log("addSlideIndexes: "+addSlideIndexes+" removeIndexes: "+removeIndexes+" insertBefore: "+insertBefore)
-            if(insertBefore){
-                addSlideIndexes.reverse();
-            }
-            
             //calculate new x positions for animation
             if(insertBefore){
                 var starting_left = 0 - (this.buffer_sides * this.slide_width) - (this.slide_width * removeIndexes.length)
@@ -419,43 +467,6 @@
             }
 
 
-            //Add new slides to beginning or end of container
-            var added_buffer = this.buffer_sides_change < 0;
-            if(added_buffer){
-                
-                //insert before
-                for(var k=0; k<addSlideIndexes.length/2; k++){
-                    var slide_index = addSlideIndexes[k];
-                    var slide = this.all_images_index_hash[slide_index];
-                    var slide_html = this.createSlide(slide);
-                    $(this.slide_container).prepend(slide_html);    
-                }
-
-                //insert after
-                for(var k=addSlideIndexes.length/2; k<addSlideIndexes.length; k++){
-                    var slide_index = addSlideIndexes[k];
-                    var slide = this.all_images_index_hash[slide_index];
-                    var slide_html = this.createSlide(slide);
-                    $(this.slide_container).append(slide_html);    
-                }
-
-
-            }else{
-                for(var k=0; k<addSlideIndexes.length; k++){
-                    var slide_index = addSlideIndexes[k];
-                    var slide = this.all_images_index_hash[slide_index];
-                    var slide_html = this.createSlide(slide);
-
-                    // console.log("insert at "+k+" which is "+slide_index+" "+slide_html)
-                    if(insertBefore){
-                        $(this.slide_container).prepend(slide_html);    
-                    }else{
-                        $(this.slide_container).append(slide_html);
-                    }
-                }
-            }
-            
-
             $(this.slide_container).css("left", starting_left);
 
             this.resizeContainers();
@@ -469,7 +480,7 @@
 
                 $( this.slide_container ).animate({
                     left: target_left,
-                }, this.options.animationDuration, this.options.animationEase, function() {
+                }, duration, this.options.animationEase, function() {
                     parent.renderSlidesComplete();
                 });
             }
@@ -513,7 +524,7 @@
                 afterQueue.push(item_index);
             });
             this.previous_rendered_queue = afterQueue;
-            // console.log("AFTER queue is "+afterQueue)
+            // console.log("--> AFTER queue is "+afterQueue)
 
 
             var ending_target_left = 0-(this.buffer_sides * this.slide_width);
