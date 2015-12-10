@@ -13,6 +13,7 @@ $mobile_break: 768px;
   }
 }
 
+
 .ribbon-carousel {
 
 	position: relative;
@@ -31,11 +32,14 @@ $mobile_break: 768px;
 			padding: 0;
       overflow: hidden;
       height: 100%;
+      -moz-box-sizing: border-box;
+      box-sizing: border-box;
 
       figure{
         padding:0;
         margin:0;
       }
+      
 
 			img{
 				position: relative;

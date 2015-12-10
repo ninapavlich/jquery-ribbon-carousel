@@ -277,6 +277,8 @@
                 $(this).trigger("SLIDE_CHANGE_EVENT");
 
                 this.resetAutoplay();
+
+                this.pauseSlide(this.previous_rendered_index);
             }
             
             if(this.options.useAnchors==true){
@@ -446,6 +448,29 @@
                         }
                     }
                 }
+
+                //Apply active classes:
+                var next_index = this.getNextSlideIndex();
+                var previous_index = this.getPreviousSlideIndex();
+
+                $(this.slide_container).children().each(function(index, item){
+                    var slide_index = parseInt($(item).attr('data-index'));
+
+                    $(item).removeClass("current");
+                    $(item).removeClass("next");
+                    $(item).removeClass("previous");
+                    if(slide_index == parent.current_index){
+                        $(item).addClass("current");
+                    }else if(slide_index == next_index){
+                        $(item).addClass("next");
+                    }else if(slide_index == previous_index){
+                        $(item).addClass("previous");
+                    }
+
+                    
+
+                });
+
             
             }else{
                 var insertBefore = false;
@@ -551,6 +576,7 @@
                 return;
             }
             var slide_index = parseInt($(slide).attr('data-index'));
+            console.log("slide index clicked: "+slide_index)
             if(this.current_index!=slide_index){
                 event.preventDefault();
                 this.setSlideIndex(slide_index, 'handleSlideClick');
@@ -827,12 +853,33 @@
 
             $(slide_element).bind("click", function(event){
                 parent.handleSlideClick(event, this);
-                
             })
+
 
             return slide_element;
         },
+        pauseSlide: function(pause_index){
+            
+            var slide_item = null;
+            $(this.slide_container).children().each(function(index, item){
+                var slide_index = parseInt($(item).attr('data-index'));
+                if(slide_index == pause_index){
+                    slide_item = item;
+                }
+            });
 
+            
+            //Pause any iframe activity:
+            if($(slide_item).find("iframe").length > 0){
+                $(slide_item).find("iframe").each(function(iframe_index, iframe_item){
+                    var iframe_source = $(iframe_item).attr('src');
+                    $(iframe_item).attr('src', ""); // sets the source to nothing, stopping the video
+                    $(iframe_item).attr('src', iframe_source);
+                });
+            }
+                        
+                    
+        },
         destroySlide: function(item){
             $(item).remove();
             $(item).unbind("click");

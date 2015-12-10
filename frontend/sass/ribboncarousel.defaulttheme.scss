@@ -100,10 +100,45 @@ $loading_height: 350px;
             }
             figcaption {
                 position:absolute;
-                padding:0.5em;
+                padding:1em;
                 bottom:0px;
                 width:100%;
                 @include scrim();
+                & > *:first-child{
+                    margin-top:0;
+                }
+                & > *:last-child{
+                    margin-bottom:0;
+                }
+            }
+        }
+        iframe{
+            width: 100% !important;
+            height: 100% !important;
+        }
+        .video-container{
+            position: relative;
+            img{
+                position:absolute;
+                top:0;
+                left:0;
+            }            
+        }
+
+
+        & > *{
+            &.current{
+                &.video-container{
+                    img{
+                        display: none;
+                    }
+                }
+            }
+            &.previous{
+
+            }
+            &.next{
+
             }
         }
     }
