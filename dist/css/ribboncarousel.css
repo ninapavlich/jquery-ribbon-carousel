@@ -1,14 +1,14 @@
-/* line 17, ../../../sass/ribboncarousel.scss */
+/* line 16, ../../../sass/ribboncarousel.scss */
 .ribbon-carousel {
   position: relative;
   width: 100%;
 }
-/* line 22, ../../../sass/ribboncarousel.scss */
+/* line 21, ../../../sass/ribboncarousel.scss */
 .ribbon-carousel .slide-container-inner {
   position: absolute;
   /*height:100%;*/
 }
-/* line 27, ../../../sass/ribboncarousel.scss */
+/* line 26, ../../../sass/ribboncarousel.scss */
 .ribbon-carousel .slide-container-inner > * {
   display: block;
   position: relative;
@@ -20,12 +20,12 @@
   -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
-/* line 38, ../../../sass/ribboncarousel.scss */
+/* line 37, ../../../sass/ribboncarousel.scss */
 .ribbon-carousel .slide-container-inner > * figure {
   padding: 0;
   margin: 0;
 }
-/* line 44, ../../../sass/ribboncarousel.scss */
+/* line 43, ../../../sass/ribboncarousel.scss */
 .ribbon-carousel .slide-container-inner > * img {
   position: relative;
 }
